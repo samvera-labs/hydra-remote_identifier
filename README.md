@@ -2,6 +2,13 @@
 
 TODO: Write a gem description
 
+## TODO
+
+* Define how to configure RemoteService credentials
+* Provide Railtie generator
+* Allow .register to handle multiple classes
+* Define how to lookup RemoteService
+
 ## Installation
 
 Add this line to your application's Gemfile:
