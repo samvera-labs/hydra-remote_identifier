@@ -1,11 +1,12 @@
+require File.expand_path('../exceptions', __FILE__)
+
 module Hydra::RemoteIdentifier
-  class InvalidServiceMapping < RuntimeError
-    def initialize(errors)
-      super(errors.join(". ") << '.')
-    end
-  end
+
+  # Registry is responsible for associating a model with a set of remote services and defining the attribute map
+  # The Mapper is responsible for transforming a target, via a Map, into an acceptable format for a Minter
   class Mapper
 
+    # The Wrapper provides the getting and setting behavior for a target based on a Map
     class Wrapper
       attr_reader :map, :target
       def initialize(map, target)
@@ -50,6 +51,9 @@ module Hydra::RemoteIdentifier
       end
     end
 
+    # The Map is responsible for defining which attributes on the target map
+    # to the attributes expected in the RemoteService as well as defining
+    # how the RemoteService can update the target
     class Map < BasicObject
       attr_reader :service_class, :_getters, :_setter
       def initialize(service_class, &config)

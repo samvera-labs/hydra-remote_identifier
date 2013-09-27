@@ -1,5 +1,8 @@
 module Hydra::RemoteIdentifier
 
+  # The Minter is responsible for passing the target's payload to the
+  # RemoteService then setting the target's identifier based on the response
+  # from the remote_service
   class Minter
 
     def self.call(coordinator, target)
