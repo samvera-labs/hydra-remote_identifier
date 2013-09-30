@@ -7,8 +7,9 @@ module Hydra::RemoteIdentifier
   # payload.
   class RemoteService
 
-    def self.valid_attribute?(attribute_name)
-      true
+    def valid_attribute?(attribute_name)
+      raise NotImplementedError,
+        "You must implement #{self.class}#valid_attribute?"
     end
 
     def call(payload)

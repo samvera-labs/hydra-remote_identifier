@@ -7,6 +7,7 @@ module Hydra::RemoteIdentifier
     subject { RemoteService.new }
 
     it { expect { subject.call(payload) }.to raise_error NotImplementedError }
+    it { expect { subject.valid_attribute?(:attribute_name) }.to raise_error NotImplementedError }
 
   end
 
