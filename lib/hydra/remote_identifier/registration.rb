@@ -1,4 +1,5 @@
 require 'active_support/core_ext/class/attribute'
+require File.expand_path('../minting_coordinator', __FILE__)
 
 module Hydra::RemoteIdentifier
 

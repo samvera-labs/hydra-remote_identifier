@@ -1,18 +1,21 @@
+require File.expand_path('../mapper', __FILE__)
+require File.expand_path('../minter', __FILE__)
+
 module Hydra::RemoteIdentifier
 
   # The Minting
   class MintingCoordinator
-    attr_reader :service_class, :mapper
-    def initialize(service_class, mapper_builder = Mapper, &map_config)
-      @service_class = service_class
-      @mapper = mapper_builder.new(service_class, &map_config)
+    attr_reader :remote_service, :mapper
+    def initialize(remote_service, mapper_builder = Mapper, &map_config)
+      @remote_service = remote_service
+      @mapper = mapper_builder.new(remote_service, &map_config)
     end
 
     # Responsible for passing attributes from the target, as per the map, to
     # the service and assigning the result of the service to the target, as per
     # the map.
     def call(target, minter = Minter)
-      minter.call(service_class.new, wrap(target))
+      minter.call(remote_service, wrap(target))
     end
 
     private
