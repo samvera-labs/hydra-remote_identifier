@@ -13,12 +13,12 @@ module Hydra::RemoteIdentifier
 
     def remote_service(string)
       namespace_for_lookup = RemoteServices
-      scheme_name = string.to_s.gsub(/(?:^|_)([a-z])/) { $1.upcase }
-      if namespace_for_lookup.const_defined?(scheme_name)
-        namespace_for_lookup.const_get(scheme_name).new
+      remote_service_class_name = string.to_s.gsub(/(?:^|_)([a-z])/) { $1.upcase }
+      if namespace_for_lookup.const_defined?(remote_service_class_name)
+        namespace_for_lookup.const_get(remote_service_class_name).new
       else
         raise NotImplementedError.new(
-          "Unable to find #{self} remote_service '#{string}'. Consider creating #{namespace_for_lookup}::#{scheme_name}"
+          "Unable to find #{self} remote_service '#{string}'. Consider creating #{namespace_for_lookup}::#{remote_service_class_name}"
         )
       end
     end
