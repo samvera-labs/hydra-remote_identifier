@@ -47,5 +47,21 @@ module Hydra::RemoteIdentifier
         }.to raise_error(InvalidServiceMapping)
       end
     end
+
+    describe Mapper::Wrapper do
+      subject { Mapper::Wrapper.new(map, target) }
+      context 'extract_payload' do
+        let(:target) { double(foo: :foo_value) }
+        describe 'with implicit getter' do
+          let(:map) { double(_getters: { bar: :foo } ) }
+          its(:extract_payload) { should == {bar: :foo_value} }
+        end
+
+        describe 'with lambda getter' do
+          let(:map) { double(_getters: { bar: lambda {|o| o.foo } } ) }
+          its(:extract_payload) { should == {bar: :foo_value} }
+        end
+      end
+    end
   end
 end
