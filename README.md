@@ -1,13 +1,7 @@
 # Hydra::RemoteIdentifier
 
-TODO: Write a gem description
-
-## TODO
-
-* Define how to configure RemoteService credentials
-* Provide Railtie generator
-* Allow .register to handle multiple classes
-* Define how to lookup RemoteService
+Coordinate the registration and minting of remote identifiers for persisted
+objects.
 
 ## Installation
 
@@ -25,12 +19,11 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+In your `./config/initializers` add a file that registers remote identification
+services for a list of models.
 
-## Contributing
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+    Hydra::RemoteIdentifier.register(:doi, Book) do |map|
+      map.what  {|book| book.title + ": " book.subtitle }
+      map.who   :author_name
+      map.set_identifier {|book, value| book.set_doi!(value)}
+    end
