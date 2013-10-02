@@ -6,6 +6,15 @@ module Hydra::RemoteIdentifier
   # The Mapper is responsible for transforming a target, via a Map, into an acceptable format for a Minter
   class Mapper
 
+    attr_reader :map
+    def initialize(service_class, map_builder = Map, &mapping_block)
+      @map = map_builder.new(service_class, &mapping_block)
+    end
+
+    def call(target, wrapper_builder = Wrapper)
+      wrapper_builder.new(map, target)
+    end
+
     # The Wrapper provides the getting and setting behavior for a target based on a Map
     class Wrapper
       attr_reader :map, :target
@@ -81,15 +90,6 @@ module Hydra::RemoteIdentifier
           @errors << "Invalid mapping #{method_name}"
         end
       end
-    end
-
-    attr_reader :map
-    def initialize(service_class, map_builder = Map, &mapping_block)
-      @map = map_builder.new(service_class, &mapping_block)
-    end
-
-    def call(target, wrapper_builder = Wrapper)
-      wrapper_builder.new(map, target)
     end
 
   end
