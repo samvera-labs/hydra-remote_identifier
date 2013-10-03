@@ -1,5 +1,1 @@
-module Hydra::RemoteIdentifier
-  module RemoteServices
-    # For namespace
-  end
-end
+require 'hydra/remote_identifier/remote_services'

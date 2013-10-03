@@ -1,0 +1,47 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://apitest:apitest@n2t.net/ezid/shoulder/doi:10.5072/FK2
+    body:
+      encoding: UTF-8
+      string: |-
+        _target: http://google.com
+        datacite.creator: Jeremy Friesen
+        datacite.title: My Article
+        datacite.publisher: Me Myself and I
+        datacite.publicationyear: 2013
+    headers:
+      Accept:
+      - '*/*; q=0.5, application/xml'
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - text/plain
+      Content-Length:
+      - '153'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 201
+      message: CREATED
+    headers:
+      Date:
+      - Thu, 03 Oct 2013 17:50:51 GMT
+      Server:
+      - Apache/2.2.17 (Unix) DAV/2 mod_wsgi/3.3 Python/2.7 mod_ssl/2.2.17 OpenSSL/0.9.8o
+      Vary:
+      - Cookie
+      Set-Cookie:
+      - sessionid=649cfcff023c40d4c8f1420673837ae6; Path=/ezid/
+      Content-Length:
+      - '53'
+      Content-Type:
+      - text/plain; charset=UTF-8
+    body:
+      encoding: UTF-8
+      string: 'success: doi:10.5072/FK23J3QV8 | ark:/b5072/fk23j3qv8'
+    http_version: 
+  recorded_at: Thu, 03 Oct 2013 17:50:54 GMT
+recorded_with: VCR 2.6.0
