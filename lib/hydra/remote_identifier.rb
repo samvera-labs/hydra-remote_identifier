@@ -12,15 +12,16 @@ module Hydra::RemoteIdentifier
     #
     # @example
     #     Hydra::RemoteIdentifier.configure do |config|
-    #       config.remote_service(
-    #         :doi,
-    #         {
-    #           username: 'apitest',
-    #           password: 'apitest',
-    #           shoulder: "sldr1",
-    #           naa: "10.1000"
-    #         }
-    #       )
+    #       config.configure_remote_service(:doi, doi_credentials) do |doi|
+    #         doi.register(target_class) do |map|
+    #           map.target :url
+    #           map.creator :creator
+    #           map.title :title
+    #           map.publisher :publisher
+    #           map.publicationyear :publicationyear
+    #           map.set_identifier(:set_identifier=)
+    #         end
+    #       end
     #     end
     #
     # @yieldparam config [Configuration]

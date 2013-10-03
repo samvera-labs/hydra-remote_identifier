@@ -22,23 +22,14 @@ Or install it yourself as:
 Configure your remote identifiers with credentials and what have you:
 
     Hydra::RemoteIdentifier.configure do |config|
-      config.remote_service(
-        :doi,
-        {
-          username: 'apitest',
-          password: 'apitest',
-          shoulder: "sldr1",
-          naa: "10.1000"
-        }
-      )
-    end
-
-
-In your `./config/initializers` add a file that registers remote identification
-services for a list of models:
-
-    Hydra::RemoteIdentifier.register(:doi, Book) do |map|
-      map.what  {|book| book.title + ": " book.subtitle }
-      map.who   :author_name
-      map.set_identifier {|book, value| book.set_doi!(value)}
+      config.configure_remote_service(:doi, doi_credentials) do |doi|
+        doi.register(target_class) do |map|
+          map.target :url
+          map.creator :creator
+          map.title :title
+          map.publisher :publisher
+          map.publicationyear :publicationyear
+          map.set_identifier(:set_identifier=)
+        end
+      end
     end
