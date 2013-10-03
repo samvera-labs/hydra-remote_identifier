@@ -1,5 +1,7 @@
 module Hydra::RemoteIdentifier
 
+  # Configuration is responsible for exposing the available RemoteServices
+  # and configuring those RemoteServices.
   class Configuration
     attr_reader :remote_service_namespace_container
     def initialize(remote_service_namespace_container = Hydra::RemoteIdentifier::RemoteServices)

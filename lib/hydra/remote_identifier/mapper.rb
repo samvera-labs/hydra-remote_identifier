@@ -2,8 +2,8 @@ require File.expand_path('../exceptions', __FILE__)
 
 module Hydra::RemoteIdentifier
 
-  # Registry is responsible for associating a model with a set of remote services and defining the attribute map
-  # The Mapper is responsible for transforming a target, via a Map, into an acceptable format for a Minter
+  # The Mapper is responsible for transforming a target, via a Map, into an
+  # acceptable format for a Minter
   class Mapper
 
     attr_reader :map
