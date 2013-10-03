@@ -54,21 +54,6 @@ module Hydra::RemoteIdentifier
       end
     end
 
-    describe '.RemoteServiceLookup' do
-      context 'with valid remote service' do
-        subject { Hydra::RemoteIdentifier::RemoteServiceLookup(:my_remote_service) }
-        it 'should return an instance of that service' do
-          expect(subject).to eq RemoteServices::MyRemoteService
-        end
-      end
-      context 'with invalid remote service' do
-        subject { Hydra::RemoteIdentifier::RemoteServiceLookup(:undefined_service) }
-        it 'should raise a NotImplementedError' do
-          expect { subject }.to raise_error NotImplementedError
-        end
-      end
-    end
-
   end
 
 end
