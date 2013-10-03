@@ -2,6 +2,9 @@ require File.expand_path('../../../../lib/hydra/remote_identifier', __FILE__)
 module Hydra::RemoteIdentifier
 
   describe 'with custom remote service' do
+    before(:each) do
+      Hydra::RemoteIdentifier.configure {|config|}
+    end
     around do |example|
       module RemoteServices
         class MyRemoteService < ::Hydra::RemoteIdentifier::RemoteService
