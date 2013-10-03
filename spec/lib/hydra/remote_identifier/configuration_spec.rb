@@ -22,11 +22,11 @@ module Hydra::RemoteIdentifier
 
     context 'with a missing service' do
       specify do
-        expect { subject.register_remote_service(:obviously_missing_service) }.to raise_error(NotImplementedError)
+        expect { subject.remote_service(:obviously_missing_service) }.to raise_error(NotImplementedError)
       end
       specify do
         expect {
-          subject.remote_service(:obviously_missing_service)
+          subject.find_remote_service(:obviously_missing_service)
         }.to raise_error(NotImplementedError)
       end
     end
@@ -35,11 +35,11 @@ module Hydra::RemoteIdentifier
       let(:block) { lambda {} }
       specify do
         expect {
-          subject.register_remote_service(:my_remote_service, :arg, &block)
+          subject.remote_service(:my_remote_service, :arg, &block)
         }.to change(RemoteServices::MyRemoteService, :options).from(nil).to([[:arg], block])
       end
       specify do
-        expect(subject.remote_service(:my_remote_service)).to be_an_instance_of(RemoteServices::MyRemoteService)
+        expect(subject.find_remote_service(:my_remote_service)).to be_an_instance_of(RemoteServices::MyRemoteService)
       end
     end
 

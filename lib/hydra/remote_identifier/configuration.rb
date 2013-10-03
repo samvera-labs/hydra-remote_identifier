@@ -1,3 +1,5 @@
+require 'hydra/remote_identifier/remote_services'
+
 module Hydra::RemoteIdentifier
 
   # Configuration is responsible for exposing the available RemoteServices
@@ -8,11 +10,11 @@ module Hydra::RemoteIdentifier
       @remote_service_namespace_container = remote_service_namespace_container
     end
 
-    def remote_service(service_name)
+    def find_remote_service(service_name)
       remote_service_class_lookup(service_name).new
     end
 
-    def register_remote_service(service_name, *args, &block)
+    def remote_service(service_name, *args, &block)
       remote_service_class_lookup(service_name).configure(*args, &block)
     end
 

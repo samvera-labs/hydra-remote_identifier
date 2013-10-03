@@ -2,7 +2,6 @@ require "hydra/remote_identifier/version"
 require 'hydra/remote_identifier/configuration'
 require 'hydra/remote_identifier/registration'
 require 'hydra/remote_identifier/remote_service'
-require 'hydra/remote_identifier/remote_services'
 
 module Hydra::RemoteIdentifier
 
@@ -13,7 +12,7 @@ module Hydra::RemoteIdentifier
     #
     # @example
     #     Hydra::RemoteIdentifier.configure do |config|
-    #       config.register_remote_service(
+    #       config.remote_service(
     #         :doi,
     #         {
     #           username: 'apitest',
@@ -51,7 +50,7 @@ module Hydra::RemoteIdentifier
     #   :remote_resource should do (see Mapper::Wrapper)
     def register(remote_service_name, *target_classes, &map)
       Array(target_classes).flatten.compact.each do |target_class|
-        remote_service = configuration.remote_service(remote_service_name)
+        remote_service = configuration.find_remote_service(remote_service_name)
         registration_builder.new(remote_service, target_class, &map)
       end
     end

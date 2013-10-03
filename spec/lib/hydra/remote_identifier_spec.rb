@@ -26,7 +26,7 @@ module Hydra::RemoteIdentifier
         RemoteServices::MyRemoteService.should_receive(:configure).
           with(configuration_options)
         Hydra::RemoteIdentifier.configure do |config|
-          config.register_remote_service(:my_remote_service, configuration_options)
+          config.remote_service(:my_remote_service, configuration_options)
         end
       end
     end
