@@ -4,8 +4,6 @@ module Hydra::RemoteIdentifier
 
   describe RemoteService do
 
-    it { expect { RemoteService.configure }.to raise_error(NotImplementedError) }
-
     describe 'instance methods' do
       let(:payload) { 'abc' }
       subject { RemoteService.new }

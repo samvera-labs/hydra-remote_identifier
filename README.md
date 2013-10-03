@@ -21,6 +21,7 @@ Or install it yourself as:
 
 Configure your remote identifiers with credentials and what have you:
 
+    doi_credentials = Psych.load('/path/to/doi_credentials.yml')
     Hydra::RemoteIdentifier.configure do |config|
       config.configure_remote_service(:doi, doi_credentials) do |doi|
         doi.register(target_class) do |map|

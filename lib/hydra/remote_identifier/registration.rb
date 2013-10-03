@@ -3,16 +3,32 @@ require File.expand_path('../minting_coordinator', __FILE__)
 
 module Hydra::RemoteIdentifier
 
-  # The Registration is responsible for connecting a RemoteService, a Target
+  # The Registration is responsible for connecting a RemoteService and a Target
   # to a particular Map
   class Registration
-    def initialize(service_class, target_class, minting_coordinator = MintingCoordinator, &map)
+    attr_reader :remote_service, :minting_coordinator
+    def initialize(remote_service, minting_coordinator = MintingCoordinator, &map)
+      @remote_service = remote_service
+      @minting_coordinator = minting_coordinator
+    end
+
+    def register(*target_classes, &map)
       if map.nil?
-        raise RuntimeError, "You attempted to register the remote service #{service_class} for #{target_class} without a map"
+        raise RuntimeError, "You attempted to register the remote service #{remote_service} for #{target_classes} without a map"
       end
-      target_class.class_attribute :registered_remote_identifier_minters unless target_class.respond_to?(:registered_remote_identifier_minters)
+      Array(target_classes).flatten.compact.each {|target_class|
+        register_target(target_class, &map)
+      }
+    end
+
+    private
+
+    def register_target(target_class, &map)
+      unless target_class.respond_to?(:registered_remote_identifier_minters)
+        target_class.class_attribute :registered_remote_identifier_minters
+      end
       target_class.registered_remote_identifier_minters ||= []
-      target_class.registered_remote_identifier_minters += [minting_coordinator.new(service_class, &map)]
+      target_class.registered_remote_identifier_minters += [minting_coordinator.new(remote_service, &map)]
     end
   end
 

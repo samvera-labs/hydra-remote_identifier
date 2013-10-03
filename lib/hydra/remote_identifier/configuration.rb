@@ -6,8 +6,8 @@ module Hydra::RemoteIdentifier
   # and configuring those RemoteServices.
   class Configuration
 
-    def initialize(remote_service_namespace_container = Hydra::RemoteIdentifier::RemoteServices)
-      @remote_service_namespace_container = remote_service_namespace_container
+    def initialize(options = {})
+      @remote_service_namespace_container = options.fetch(:remote_service_namespace_container, Hydra::RemoteIdentifier::RemoteServices)
       @remote_services = {}
     end
     attr_reader :remote_service_namespace_container
@@ -22,20 +22,11 @@ module Hydra::RemoteIdentifier
       remote_service_class_lookup(service_name).configure(*args, &block)
     end
 
-    class ConfigRegistration
-      attr_reader :remote_service
-      def initialize(remote_service)
-        @remote_service = remote_service
-      end
-      def register(*klasses, &map)
-        Registration.new(remote_service, *klasses, &map)
-      end
-    end
-
     def configure_remote_service(service_name, *args, &block)
       remote_service = remote_service_class_lookup(service_name).new(*args)
       remote_services[service_name]
-      yield(ConfigRegistration.new(remote_service))
+      yield(Registration.new(remote_service))
+      remote_service
     end
 
     private
