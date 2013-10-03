@@ -34,9 +34,16 @@ module Hydra::RemoteIdentifier
     #   :remote_resource should do (see Mapper::Wrapper)
     def register(remote_service_name, *target_classes, &map)
       Array(target_classes).flatten.compact.each do |target_class|
-        remote_service = configuration.remote_service_lookup(remote_service_name).new
-        Registration.new(remote_service, target_class, &map)
+        remote_service = configuration.remote_service(remote_service_name)
+        registration_builder.new(remote_service, target_class, &map)
       end
+    end
+
+    attr_writer :registration_builder
+
+    private
+    def registration_builder
+      @registration_builder || Registration
     end
 
   end

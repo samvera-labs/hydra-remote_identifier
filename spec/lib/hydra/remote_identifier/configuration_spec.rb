@@ -26,7 +26,7 @@ module Hydra::RemoteIdentifier
       end
       specify do
         expect {
-          subject.remote_service_lookup(:obviously_missing_service)
+          subject.remote_service(:obviously_missing_service)
         }.to raise_error(NotImplementedError)
       end
     end
@@ -39,7 +39,7 @@ module Hydra::RemoteIdentifier
         }.to change(RemoteServices::MyRemoteService, :options).from(nil).to([[:arg], block])
       end
       specify do
-        expect(subject.remote_service_lookup(:my_remote_service)).to eq(RemoteServices::MyRemoteService)
+        expect(subject.remote_service(:my_remote_service)).to be_an_instance_of(RemoteServices::MyRemoteService)
       end
     end
 
