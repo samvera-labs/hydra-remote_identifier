@@ -1,4 +1,5 @@
 require File.expand_path('../remote_services', __FILE__)
+require File.expand_path('../registration', __FILE__)
 
 module Hydra::RemoteIdentifier
 
@@ -7,21 +8,23 @@ module Hydra::RemoteIdentifier
   class Configuration
 
     def initialize(options = {})
-      @remote_service_namespace_container = options.fetch(:remote_service_namespace_container, Hydra::RemoteIdentifier::RemoteServices)
+      @remote_service_namespace_container = options.fetch(:remote_service_namespace_container, RemoteServices)
+      @registration_builder = options.fetch(:registration_builder, Registration)
       @remote_services = {}
     end
-    attr_reader :remote_service_namespace_container
-    private :remote_service_namespace_container
+    attr_reader :remote_service_namespace_container, :registration_builder
+    private :remote_service_namespace_container, :registration_builder
     attr_reader :remote_services
 
     def find_remote_service(service_name)
-      remote_services.fetch(service_name, remote_service_class_lookup(service_name).new)
+      remote_services.fetch(service_name)
     end
 
-    def remote_service(service_name, *args, &block)
+    def remote_service(service_name, *args)
       remote_service = remote_service_class_lookup(service_name).new(*args)
-      remote_services[service_name]
-      yield(Registration.new(remote_service))
+      remote_services[service_name] = remote_service
+      registration = registration_builder.new(remote_service)
+      yield(registration)
       remote_service
     end
 
