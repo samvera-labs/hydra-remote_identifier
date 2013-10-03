@@ -12,7 +12,7 @@ module Hydra::RemoteIdentifier
     #
     # @example
     #     Hydra::RemoteIdentifier.configure do |config|
-    #       config.configure_remote_service(:doi, doi_credentials) do |doi|
+    #       config.remote_service(:doi, doi_credentials) do |doi|
     #         doi.register(target_class) do |map|
     #           map.target :url
     #           map.creator :creator

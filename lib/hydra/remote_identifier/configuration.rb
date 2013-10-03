@@ -19,10 +19,6 @@ module Hydra::RemoteIdentifier
     end
 
     def remote_service(service_name, *args, &block)
-      remote_service_class_lookup(service_name).configure(*args, &block)
-    end
-
-    def configure_remote_service(service_name, *args, &block)
       remote_service = remote_service_class_lookup(service_name).new(*args)
       remote_services[service_name]
       yield(Registration.new(remote_service))

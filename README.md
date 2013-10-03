@@ -23,8 +23,8 @@ Configure your remote identifiers with credentials and what have you:
 
     doi_credentials = Psych.load('/path/to/doi_credentials.yml')
     Hydra::RemoteIdentifier.configure do |config|
-      config.configure_remote_service(:doi, doi_credentials) do |doi|
-        doi.register(target_class) do |map|
+      config.remote_service(:doi, doi_credentials) do |doi|
+        doi.register(Book, Page) do |map|
           map.target :url
           map.creator :creator
           map.title :title
