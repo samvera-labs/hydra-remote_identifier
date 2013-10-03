@@ -42,7 +42,7 @@ module Hydra::RemoteIdentifier
           target.send(setter, value)
         elsif setter.is_a?(Hash)
           datastream = setter.fetch(:at)
-          field = setter.fetch(:in, scheme)
+          field = setter.fetch(:in)
           target.datastreams["#{datastream}"].send("#{field}=", value)
         end
       end

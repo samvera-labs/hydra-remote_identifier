@@ -50,6 +50,7 @@ module Hydra::RemoteIdentifier
 
     describe Mapper::Wrapper do
       subject { Mapper::Wrapper.new(map, target) }
+
       context 'extract_payload' do
         let(:target) { double(foo: :foo_value) }
         describe 'with implicit getter' do
@@ -61,7 +62,96 @@ module Hydra::RemoteIdentifier
           let(:map) { double(_getters: { bar: lambda {|o| o.foo } } ) }
           its(:extract_payload) { should == {bar: :foo_value} }
         end
+
+        describe 'with implicit datastream getter' do
+          let(:target) {
+            double(datastreams: {'datastream' => double(foo: :foo_value)})
+          }
+          let(:map) {
+            double(_getters: { foo: { at: 'datastream' } } )
+          }
+          its(:extract_payload) { should == {foo: :foo_value} }
+        end
+
+        describe 'with explicit datastream getter' do
+          let(:target) {
+            double(datastreams: {'datastream' => double(blorg: :foo_value)})
+          }
+          let(:map) {
+            double(_getters: { foo: { at: 'datastream', in: :blorg } } )
+          }
+          its(:extract_payload) { should == {foo: :foo_value} }
+        end
+
       end
+
+      context '#extract_payload' do
+
+        let(:target) { double(foo: :foo_value) }
+        describe 'with implicit getter' do
+          let(:map) { double(_getters: { bar: :foo } ) }
+          its(:extract_payload) { should == {bar: :foo_value} }
+        end
+
+        describe 'with lambda getter' do
+          let(:map) { double(_getters: { bar: lambda {|o| o.foo } } ) }
+          its(:extract_payload) { should == {bar: :foo_value} }
+        end
+
+        describe 'with implicit datastream getter' do
+          let(:target) {
+            double(datastreams: {'datastream' => double(foo: :foo_value)})
+          }
+          let(:map) {
+            double(_getters: { foo: { at: 'datastream' } } )
+          }
+          its(:extract_payload) { should == {foo: :foo_value} }
+        end
+
+        describe 'with explicit datastream getter' do
+          let(:target) {
+            double(datastreams: {'datastream' => double(blorg: :foo_value)})
+          }
+          let(:map) {
+            double(_getters: { foo: { at: 'datastream', in: :blorg } } )
+          }
+          its(:extract_payload) { should == {foo: :foo_value} }
+        end
+
+      end
+
+      context '#set_identifier' do
+        let(:target) { double }
+        describe 'with implicit setter' do
+          let(:map) { double(_setter: :bar) }
+          specify {
+            target.should_receive(:bar).with(:expected_identifier)
+            subject.set_identifier(:expected_identifier)
+          }
+        end
+
+        describe 'with lambda setter' do
+          let(:map) { double(_setter: lambda {|o, v| o.foo = v  } ) }
+          specify {
+            target.should_receive(:foo=).with(:expected_identifier)
+            subject.set_identifier(:expected_identifier)
+          }
+        end
+
+        describe 'with explicit datastream getter' do
+          let(:target) { double(datastreams: datastreams ) }
+          let(:datastreams) { {'properties' => double } }
+          let(:map) {
+            double(_setter: { at: 'properties', in: :identifier } )
+          }
+          specify {
+            datastreams['properties'].should_receive(:identifier=).with(:expected_identifier)
+            subject.set_identifier(:expected_identifier)
+          }
+        end
+
+      end
+
     end
   end
 end
