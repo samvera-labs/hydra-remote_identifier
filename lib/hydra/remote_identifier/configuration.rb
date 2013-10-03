@@ -10,12 +10,11 @@ module Hydra::RemoteIdentifier
       remote_service_class_lookup(service_name).new
     end
 
+    def register_remote_service(service_name, *args, &block)
+      remote_service_class_lookup(service_name).configure(*args, &block)
+    end
 
     private
-
-    def method_missing(method_name, *args, &block)
-      remote_service_class_lookup(method_name).configure(*args, &block)
-    end
 
     def remote_service_class_lookup(string)
       remote_service_class_name = string.to_s.gsub(/(?:^|_)([a-z])/) { $1.upcase }

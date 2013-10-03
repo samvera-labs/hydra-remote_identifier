@@ -8,6 +8,23 @@ module Hydra::RemoteIdentifier
 
   class << self
 
+    # Used for configuring available RemoteService and any additional
+    # initialization requirements for those RemoteServices (i.e. credentials)
+    #
+    # @example
+    #     Hydra::RemoteIdentifier.configure do |config|
+    #       config.register_remote_service(
+    #         :doi,
+    #         {
+    #           username: 'apitest',
+    #           password: 'apitest',
+    #           shoulder: "sldr1",
+    #           naa: "10.1000"
+    #         }
+    #       )
+    #     end
+    #
+    # @yieldparam config [Configuration]
     attr_accessor :configuration
     def configure
       self.configuration ||= Configuration.new
