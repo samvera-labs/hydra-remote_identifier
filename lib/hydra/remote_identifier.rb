@@ -7,6 +7,12 @@ module Hydra::RemoteIdentifier
 
   class << self
 
+    attr_accessor :configuration
+    def configure
+      self.configuration ||= Configuration.new
+      yield(configuration)
+    end
+
     # For the given :remote_service_name and :target_classes register the Map
     # to use for minting a remote identifier for instances of the
     # :target_classes
@@ -27,26 +33,33 @@ module Hydra::RemoteIdentifier
     #   :remote_resource should do (see Mapper::Wrapper)
     def register(remote_service_name, *target_classes, &map)
       Array(target_classes).flatten.compact.each do |target_class|
-        Registration.new(remote_service(remote_service_name), target_class, &map)
+        remote_service = RemoteServiceLookup(remote_service_name).new
+        Registration.new(remote_service, target_class, &map)
       end
     end
 
+  end
 
-    # Given a string retrieve an instance of the corresponding RemoteService.
-    # @param string [#to_s]
-    # @return [RemoteService]
-    def remote_service(string)
-      namespace_for_lookup = RemoteServices
-      remote_service_class_name = string.to_s.gsub(/(?:^|_)([a-z])/) { $1.upcase }
-      if namespace_for_lookup.const_defined?(remote_service_class_name)
-        namespace_for_lookup.const_get(remote_service_class_name).new
-      else
-        raise NotImplementedError.new(
-          "Unable to find #{self} remote_service '#{string}'. Consider creating #{namespace_for_lookup}::#{remote_service_class_name}"
-        )
-      end
+  # Given a string retrieve a RemoteService class.
+  # @param string [#to_s]
+  # @return [RemoteService]
+  def RemoteServiceLookup(string)
+    namespace_for_lookup = RemoteServices
+    remote_service_class_name = string.to_s.gsub(/(?:^|_)([a-z])/) { $1.upcase }
+    if namespace_for_lookup.const_defined?(remote_service_class_name)
+      namespace_for_lookup.const_get(remote_service_class_name)
+    else
+      raise NotImplementedError.new(
+        "Unable to find #{self} remote_service '#{string}'. Consider creating #{namespace_for_lookup}::#{remote_service_class_name}"
+      )
     end
+  end
+  module_function :RemoteServiceLookup
 
+  class Configuration < BasicObject
+    def method_missing(method_name, *args, &block)
+      ::Hydra::RemoteIdentifier::RemoteServiceLookup(method_name).configure(*args, &block)
+    end
   end
 
 end

@@ -17,6 +17,17 @@ module Hydra::RemoteIdentifier
       RemoteServices.send(:remove_const, :MyRemoteService)
     end
 
+    describe '.configure' do
+      let(:configuration_options) { { user: "apitest", pass: "apitest", scheme: "doi" } }
+      it 'yields to allow configuration of remote service' do
+        RemoteServices::MyRemoteService.should_receive(:configure).
+          with(configuration_options)
+        Hydra::RemoteIdentifier.configure do |config|
+          config.my_remote_service(configuration_options)
+        end
+      end
+    end
+
     describe '.register' do
 
       let(:target_class) {
@@ -43,15 +54,15 @@ module Hydra::RemoteIdentifier
       end
     end
 
-    describe '.remote_service' do
+    describe '.RemoteServiceLookup' do
       context 'with valid remote service' do
-        subject { Hydra::RemoteIdentifier.remote_service(:my_remote_service) }
+        subject { Hydra::RemoteIdentifier::RemoteServiceLookup(:my_remote_service) }
         it 'should return an instance of that service' do
-          expect(subject).to be_instance_of RemoteServices::MyRemoteService
+          expect(subject).to eq RemoteServices::MyRemoteService
         end
       end
       context 'with invalid remote service' do
-        subject { Hydra::RemoteIdentifier.remote_service(:undefined_service) }
+        subject { Hydra::RemoteIdentifier::RemoteServiceLookup(:undefined_service) }
         it 'should raise a NotImplementedError' do
           expect { subject }.to raise_error NotImplementedError
         end
