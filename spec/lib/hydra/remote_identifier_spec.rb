@@ -1,3 +1,4 @@
+require 'spec_helper'
 require File.expand_path('../../../../lib/hydra/remote_identifier', __FILE__)
 module Hydra::RemoteIdentifier
 
@@ -49,13 +50,7 @@ module Hydra::RemoteIdentifier
 
       it 'works!', VCR::SpecSupport.merge(record: :new_episodes, cassette_name: 'doi-integration') do
         expect {
-          # @TODO
-          # Switch to using the following:
-          #     Hydra::RemoteIdentifier.mint(:doi, target)
-          #
-          target_class.registered_remote_identifier_minters.each do |minter|
-            minter.call(target)
-          end
+          Hydra::RemoteIdentifier.mint(:doi, target)
         }.to change(target, :set_identifier).from(nil).to(expected_doi)
       end
 

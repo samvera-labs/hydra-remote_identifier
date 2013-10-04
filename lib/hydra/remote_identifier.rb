@@ -31,6 +31,24 @@ module Hydra::RemoteIdentifier
       yield(configuration)
     end
 
+    # Using the RemoteService mint the corresponding remote identifier for
+    # the target. You must first configure the RemoteService and target's class
+    # to define the attribute map. See Hydra::RemoteIdentifier.configure
+    #
+    #
+    # @example
+    #     Hydra::RemoteIdentifier.mint(:doi, book)
+    #
+    # @param remote_service [#to_s]
+    # @param target [#registered_remote_identifier_minters]
+    #
+    # @todo This presently mints everything
+    def mint(remote_service, target)
+      target.registered_remote_identifier_minters.each do |minter|
+        minter.call(target)
+      end
+    end
+
   end
 
 end
