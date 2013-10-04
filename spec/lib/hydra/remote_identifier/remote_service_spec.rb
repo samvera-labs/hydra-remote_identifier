@@ -4,12 +4,17 @@ module Hydra::RemoteIdentifier
 
   describe RemoteService do
 
-    describe 'instance methods' do
-      let(:payload) { 'abc' }
-      subject { RemoteService.new }
+    let(:payload) { 'abc' }
+    subject { RemoteService.new }
+
+    context '#call' do
       it { expect { subject.call(payload) }.to raise_error NotImplementedError }
+    end
+
+    context '#valid_attribute?' do
       it { expect { subject.valid_attribute?(:attribute_name) }.to raise_error NotImplementedError }
     end
+
   end
 
 end

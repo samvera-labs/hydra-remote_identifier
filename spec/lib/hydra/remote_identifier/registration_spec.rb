@@ -14,7 +14,7 @@ module Hydra::RemoteIdentifier
         subject.register(target_class, &map)
       }.to change{ target_class.respond_to?(:registered_remote_identifier_minters) }.from(false).to(true)
     end
-    it 'adds a .registered_remote_identifier_minters method' do
+    it 'registers the minting coordinator on the target class' do
       subject.register(target_class, &map)
       expect(target_class.registered_remote_identifier_minters).to eq [:minting_coordinator]
     end
