@@ -2,7 +2,21 @@ require 'spec_helper'
 require File.expand_path('../../../../lib/hydra/remote_identifier', __FILE__)
 module Hydra::RemoteIdentifier
 
-  describe '.configure' do
+  describe 'public API' do
+    before(:each) do
+      Hydra::RemoteIdentifier.configure do |config|
+        config.remote_service(:doi, doi_options) do |doi|
+          doi.register(target_class) do |map|
+            map.target :url
+            map.creator :creator
+            map.title :title
+            map.publisher :publisher
+            map.publicationyear :publicationyear
+            map.set_identifier(:set_identifier=)
+          end
+        end
+      end
+    end
 
     let(:target_class) {
       Class.new {
@@ -31,22 +45,17 @@ module Hydra::RemoteIdentifier
       }
     }
 
-    describe '.register API' do
+    describe '.with_remote_service' do
 
-      before(:each) do
-        Hydra::RemoteIdentifier.configure do |config|
-          config.remote_service(:doi, doi_options) do |doi|
-            doi.register(target_class) do |map|
-              map.target :url
-              map.creator :creator
-              map.title :title
-              map.publisher :publisher
-              map.publicationyear :publicationyear
-              map.set_identifier(:set_identifier=)
-            end
-          end
-        end
+      it 'should yield the service if one is registered' do
+        expect {|block|
+          Hydra::RemoteIdentifier.with_registered_remote_service(:doi, target, &block)
+        }.to yield_with_args(RemoteServices::Doi)
       end
+
+    end
+
+    describe '.register' do
 
       it 'works!', VCR::SpecSupport.merge(record: :new_episodes, cassette_name: 'doi-integration') do
         expect {
