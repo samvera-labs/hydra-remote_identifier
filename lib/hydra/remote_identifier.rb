@@ -41,9 +41,8 @@ module Hydra::RemoteIdentifier
     #
     # @param remote_service_name [#to_s]
     # @param target [#registered_remote_identifier_minters]
-    #
-    # @todo This presently mints everything
     def mint(remote_service_name, target)
+      # @TODO - there is a better way to do this but this is "complete/correct"
       remote_service = configuration.find_remote_service(remote_service_name)
       target.registered_remote_identifier_minters.each do |minter|
         minter.call(target) if minter.remote_service == remote_service
