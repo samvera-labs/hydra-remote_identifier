@@ -4,7 +4,7 @@ module Hydra::RemoteIdentifier
   describe Registration do
     let(:minting_coordinator) { double(new: :minting_coordinator) }
     let(:target_class) { Class.new }
-    let(:remote_service) { double(name: :my_remote_service) }
+    let(:remote_service) { double(accessor_name: :mint_my_remote_service) }
     let(:map) { lambda {|m| m.title :title } }
     subject { Registration.new(remote_service, minting_coordinator) }
 

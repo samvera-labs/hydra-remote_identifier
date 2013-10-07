@@ -28,7 +28,7 @@ module Hydra::RemoteIdentifier
         unless target_class.respond_to?(:registered_remote_identifier_minters)
           class_attribute :registered_remote_identifier_minters
         end
-        attr_accessor "mint_#{service.name}"
+        attr_accessor service.accessor_name
       end
       target_class.registered_remote_identifier_minters ||= []
       target_class.registered_remote_identifier_minters += [minting_coordinator.new(remote_service, &map)]

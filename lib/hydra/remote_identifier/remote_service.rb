@@ -12,6 +12,10 @@ module Hydra::RemoteIdentifier
       self.class.to_s.demodulize.underscore.to_sym
     end
 
+    def accessor_name
+      "mint_#{name}".to_sym
+    end
+
     def valid_attribute?(attribute_name)
       raise NotImplementedError,
         "You must implement #{self.class}#valid_attribute?"
