@@ -24,8 +24,11 @@ module Hydra::RemoteIdentifier
     private
 
     def register_target(target_class, &map)
-      unless target_class.respond_to?(:registered_remote_identifier_minters)
-        target_class.class_attribute :registered_remote_identifier_minters
+      target_class.module_exec(remote_service) do |service|
+        unless target_class.respond_to?(:registered_remote_identifier_minters)
+          class_attribute :registered_remote_identifier_minters
+        end
+        attr_accessor "mint_#{service.name}"
       end
       target_class.registered_remote_identifier_minters ||= []
       target_class.registered_remote_identifier_minters += [minting_coordinator.new(remote_service, &map)]
