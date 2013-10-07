@@ -7,6 +7,8 @@ module Hydra::RemoteIdentifier
     let(:payload) { 'abc' }
     subject { RemoteService.new }
 
+    its(:name) { should eq :remote_service }
+
     context '#call' do
       it { expect { subject.call(payload) }.to raise_error NotImplementedError }
     end

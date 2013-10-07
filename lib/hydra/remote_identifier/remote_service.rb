@@ -1,3 +1,4 @@
+require 'active_support/core_ext/string/inflections'
 module Hydra::RemoteIdentifier
 
   # The RemoteService is responsible for delivering a payload to a remote
@@ -6,6 +7,10 @@ module Hydra::RemoteIdentifier
   # It is responsible for assisting the construction and validation of a remote
   # payload.
   class RemoteService
+
+    def name
+      self.class.to_s.demodulize.underscore.to_sym
+    end
 
     def valid_attribute?(attribute_name)
       raise NotImplementedError,
