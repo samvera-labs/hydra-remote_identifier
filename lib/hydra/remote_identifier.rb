@@ -38,18 +38,18 @@ module Hydra::RemoteIdentifier
     def with_registered_remote_service(remote_service_name, target)
       # @TODO - the registered remote identifier is more than a bit off;
       # but it continues to work
-      target.registered_remote_identifier_minters.each {|minter|
-        if minter.remote_service.name.to_s == remote_service_name.to_s
-          yield(minter.remote_service)
+      target.registered_remote_identifier_minters.each {|coordinator|
+        if coordinator.remote_service.name.to_s == remote_service_name.to_s
+          yield(coordinator.remote_service)
         end
       }
     end
 
-    def mint_if_applicable(remote_service_name, target)
-      remote_service = configuration.find_remote_service(remote_service_name)
-      if target.public_send(remote_service.accessor_name).to_i != 0
-        target.registered_remote_identifier_minters.each do |minter|
-          minter.call(target) if minter.remote_service == remote_service
+    def requested_remote_identifiers_for(target)
+      target.registered_remote_identifier_minters.each do |coordinator|
+        remote_service = coordinator.remote_service
+        if target.public_send(remote_service.accessor_name).to_i != 0
+          yield(remote_service.name)
         end
       end
     end
@@ -67,8 +67,8 @@ module Hydra::RemoteIdentifier
     def mint(remote_service_name, target)
       # @TODO - there is a better way to do this but this is "complete/correct"
       remote_service = configuration.find_remote_service(remote_service_name)
-      target.registered_remote_identifier_minters.each do |minter|
-        minter.call(target) if minter.remote_service == remote_service
+      target.registered_remote_identifier_minters.each do |coordinator|
+        coordinator.call(target) if coordinator.remote_service == remote_service
       end
     end
 

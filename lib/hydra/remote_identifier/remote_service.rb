@@ -12,14 +12,6 @@ module Hydra::RemoteIdentifier
       self.class.to_s.demodulize.underscore.to_sym
     end
 
-    def mint(target)
-      Hydra::RemoteIdentifier.mint(name, target)
-    end
-
-    def mint_if_applicable(target)
-      Hydra::RemoteIdentifier.mint_if_applicable(name, target)
-    end
-
     def accessor_name
       "mint_#{name}".to_sym
     end

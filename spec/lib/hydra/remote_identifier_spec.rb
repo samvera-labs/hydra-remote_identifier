@@ -71,20 +71,20 @@ module Hydra::RemoteIdentifier
 
     end
 
-    describe '.mint_if_applicable' do
+    describe '.requested_remote_identifiers_for' do
 
-      it 'does not mint if accessor is not set' do
-        target.mint_doi = '0'
-        expect {
-          Hydra::RemoteIdentifier.mint_if_applicable(:doi, target)
-        }.to_not change(target, :set_identifier)
+      it 'should yield when the remote identifier was requested' do
+        target.mint_doi = '1'
+        expect { |block|
+          Hydra::RemoteIdentifier.requested_remote_identifiers_for(target, &block)
+        }.to yield_with_args(:doi)
       end
 
-      it 'mints if accessor is set to non-zero', VCR::SpecSupport.merge(record: :new_episodes, cassette_name: 'doi-integration') do
-        target.mint_doi = '1'
-        expect {
-          Hydra::RemoteIdentifier.mint_if_applicable(:doi, target)
-        }.to change(target, :set_identifier).from(nil).to(expected_doi)
+      it 'should not yield when the remote identifier was not requested' do
+        target.mint_doi = '0'
+        expect { |block|
+          Hydra::RemoteIdentifier.requested_remote_identifiers_for(target, &block)
+        }.to_not yield_control
       end
 
     end
