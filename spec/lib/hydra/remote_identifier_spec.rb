@@ -53,13 +53,37 @@ module Hydra::RemoteIdentifier
         }.to yield_with_args(RemoteServices::Doi)
       end
 
+      it 'should not yield the service if non is registered' do
+        expect {|block|
+          Hydra::RemoteIdentifier.with_registered_remote_service(:alternate, target, &block)
+        }.to_not yield_control
+      end
+
     end
 
-    describe '.register' do
+    describe '.mint' do
 
       it 'works!', VCR::SpecSupport.merge(record: :new_episodes, cassette_name: 'doi-integration') do
         expect {
           Hydra::RemoteIdentifier.mint(:doi, target)
+        }.to change(target, :set_identifier).from(nil).to(expected_doi)
+      end
+
+    end
+
+    describe '.mint_if_applicable' do
+
+      it 'does not mint if accessor is not set' do
+        target.mint_doi = '0'
+        expect {
+          Hydra::RemoteIdentifier.mint_if_applicable(:doi, target)
+        }.to_not change(target, :set_identifier)
+      end
+
+      it 'mints if accessor is set to non-zero', VCR::SpecSupport.merge(record: :new_episodes, cassette_name: 'doi-integration') do
+        target.mint_doi = '1'
+        expect {
+          Hydra::RemoteIdentifier.mint_if_applicable(:doi, target)
         }.to change(target, :set_identifier).from(nil).to(expected_doi)
       end
 

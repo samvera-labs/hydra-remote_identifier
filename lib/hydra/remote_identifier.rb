@@ -35,14 +35,23 @@ module Hydra::RemoteIdentifier
     #     Hydra::RemoteIdentifier.with_registered_remote_service(:doi, book) do |remote_service|
     #       Hydra::RemoteIdentifier.mint(:doi, book)
     #     end
-    def with_registered_remote_service(service_name, target)
+    def with_registered_remote_service(remote_service_name, target)
       # @TODO - the registered remote identifier is more than a bit off;
       # but it continues to work
       target.registered_remote_identifier_minters.each {|minter|
-        if minter.remote_service.name.to_s == service_name.to_s
+        if minter.remote_service.name.to_s == remote_service_name.to_s
           yield(minter.remote_service)
         end
       }
+    end
+
+    def mint_if_applicable(remote_service_name, target)
+      remote_service = configuration.find_remote_service(remote_service_name)
+      if target.public_send(remote_service.accessor_name).to_i != 0
+        target.registered_remote_identifier_minters.each do |minter|
+          minter.call(target) if minter.remote_service == remote_service
+        end
+      end
     end
 
     # Using the RemoteService mint the corresponding remote identifier for
