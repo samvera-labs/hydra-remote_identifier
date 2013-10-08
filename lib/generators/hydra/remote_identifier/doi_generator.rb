@@ -21,7 +21,7 @@ class Hydra::RemoteIdentifier::DoiGenerator < Rails::Generators::Base
 
       data = []
       data << ""
-      data << %(  doi_credentials = Psych.load_file("#{credentials_path}"))
+      data << %(  doi_credentials = Psych.load_file(Rails.root.join("#{credentials_path}")))
       data << %(  config.remote_service(:doi, doi_credentials) do |doi|)
       data << %(    doi.register(#{normalized_targets}) do |map|)
       data << %(      map.target #{options.fetch('target')})

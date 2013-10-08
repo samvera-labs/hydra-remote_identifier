@@ -33,8 +33,10 @@ module Hydra::RemoteIdentifier
     attr_accessor :configuration
 
     def configure!
-      self.configuration ||= Configuration.new
-      @configuration_block.call(configuration)
+      if @configuration_block.respond_to?(:call)
+        self.configuration ||= Configuration.new
+        @configuration_block.call(configuration)
+      end
     end
     private :configure!
 
