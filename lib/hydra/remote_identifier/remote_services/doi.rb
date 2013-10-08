@@ -6,6 +6,13 @@ require 'active_support/core_ext/hash/indifferent_access'
 module Hydra::RemoteIdentifier
   module RemoteServices
     class Doi < Hydra::RemoteIdentifier::RemoteService
+      TEST_CONFIGURATION =
+      {
+        username: 'apitest',
+        password: 'apitest',
+        shoulder: 'doi:10.5072/FK2',
+        url: "https://n2t.net/ezid/"
+      }
 
       attr_reader :uri
       def initialize(configuration = {})
@@ -38,13 +45,13 @@ module Hydra::RemoteIdentifier
       end
 
       def data_for_create(payload)
-        [
-          "_target: #{payload.fetch(:target)}",
-          "datacite.creator: #{payload.fetch(:creator)}",
-          "datacite.title: #{payload.fetch(:title)}",
-          "datacite.publisher: #{payload.fetch(:publisher)}",
-          "datacite.publicationyear: #{payload.fetch(:publicationyear)}"
-        ].join("\n")
+        data = []
+        data << "_target: #{payload.fetch(:target)}"
+        data << "datacite.creator: #{payload.fetch(:creator)}"
+        data << "datacite.title: #{payload.fetch(:title)}"
+        data << "datacite.publisher: #{payload.fetch(:publisher)}"
+        data << "datacite.publicationyear: #{payload.fetch(:publicationyear)}"
+        data.join("\n")
       end
     end
   end

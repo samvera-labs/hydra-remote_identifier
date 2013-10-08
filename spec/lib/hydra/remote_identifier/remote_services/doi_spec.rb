@@ -5,14 +5,7 @@ module Hydra::RemoteIdentifier
   module RemoteServices
 
     describe Doi do
-      let(:configuration) {
-        {
-          username: 'apitest',
-          password: 'apitest',
-          shoulder: 'doi:10.5072/FK2',
-          url: "https://n2t.net/ezid/"
-        }
-      }
+      let(:configuration) { RemoteServices::Doi::TEST_CONFIGURATION }
       let(:payload) {
         {
           target: 'http://google.com',
