@@ -49,7 +49,7 @@ module Hydra::RemoteIdentifier
     #     <% end %>
     #
     # @param remote_service_name [#to_s]
-    # @param target [#registered_remote_identifier_minters] (see Hydra::RemoteIdentifier.configure)
+    # @param target [#registered_remote_identifier_minters]
     def with_registered_remote_service(remote_service_name, target)
       return false unless target.respond_to?(:registered_remote_identifier_minters)
       # @TODO - the registered remote identifier is more than a bit off;
@@ -69,7 +69,7 @@ module Hydra::RemoteIdentifier
     #       Hydra::RemoteIdentifier.mint(remote_service_name, book)
     #     end
     #
-    # @param target [#registered_remote_identifier_minters] (see Hydra::RemoteIdentifier.configure)
+    # @param target [#registered_remote_identifier_minters]
     # @yield_param remote_service_name [#to_s]
     def requested_remote_identifiers_for(target)
       return false unless target.respond_to?(:registered_remote_identifier_minters)
@@ -89,7 +89,7 @@ module Hydra::RemoteIdentifier
     #     Hydra::RemoteIdentifier.mint(:doi, book)
     #
     # @param remote_service_name [#to_s]
-    # @param target [#registered_remote_identifier_minters] (see Hydra::RemoteIdentifier.configure)
+    # @param target [#registered_remote_identifier_minters]
     def mint(remote_service_name, target)
       return false unless target.respond_to?(:registered_remote_identifier_minters)
 

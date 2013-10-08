@@ -12,6 +12,8 @@ module Hydra::RemoteIdentifier
       @minting_coordinator = minting_coordinator
     end
 
+    # @param target_classes [Array]
+    # @yieldparam map [Map]
     def register(*target_classes, &map)
       if map.nil?
         raise RuntimeError, "You attempted to register the remote service #{remote_service} for #{target_classes} without a map"

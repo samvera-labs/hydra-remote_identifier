@@ -20,6 +20,10 @@ module Hydra::RemoteIdentifier
       remote_services.fetch(service_name)
     end
 
+    # @param service_name [#to_s]
+    # @param args - passed through to RemoteService initializer
+    #
+    # @yieldparam [Registration]
     def remote_service(service_name, *args)
       remote_service = remote_service_class_lookup(service_name).new(*args)
       remote_services[service_name] = remote_service
