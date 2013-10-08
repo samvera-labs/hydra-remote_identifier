@@ -77,7 +77,7 @@ module Hydra::RemoteIdentifier
         target.mint_doi = '1'
         expect { |block|
           Hydra::RemoteIdentifier.requested_remote_identifiers_for(target, &block)
-        }.to yield_with_args(:doi)
+        }.to yield_with_args(instance_of(RemoteServices::Doi))
       end
 
       it 'should not yield when the remote identifier was not requested' do

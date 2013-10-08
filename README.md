@@ -36,3 +36,22 @@ Configure your remote identifiers with credentials and what have you:
         end
       end
     end
+
+In your views allow users to request that a remote identifier be assigned:
+
+    <%= form_for book do |f| %>
+      <% Hydra::RemoteIdentifier.with_registered_remote_service(:doi, f.object) do |remote_service| %>
+        <%= f.input remote_service.accessor_name %>
+      <% end %>
+    <% end %>
+
+Where you enqueue an asynchronous worker iterate over the requested identifiers:
+
+    Hydra::RemoteIdentifier.applicable_remote_service_names_for(book) do |remote_service|
+      MintRemoteIdentifierWorker.enqueue(book.to_param, remote_service.name)
+    end
+
+Where your asynchronouse worker does its work request the minting:
+
+    # Instantiate target from input
+    Hydra::RemoteIdentifier.mint(remote_service_name, target)

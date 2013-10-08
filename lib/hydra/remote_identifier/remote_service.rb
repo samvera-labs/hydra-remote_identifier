@@ -12,6 +12,10 @@ module Hydra::RemoteIdentifier
       self.class.to_s.demodulize.underscore.to_sym
     end
 
+    def to_s
+      name.to_s
+    end
+
     def accessor_name
       "mint_#{name}".to_sym
     end
