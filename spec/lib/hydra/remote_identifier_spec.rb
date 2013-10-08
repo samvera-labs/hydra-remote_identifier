@@ -70,7 +70,7 @@ module Hydra::RemoteIdentifier
 
     describe '.mint' do
 
-      it 'works!', VCR::SpecSupport.merge(record: :new_episodes, cassette_name: 'doi-integration') do
+      it 'works!', VCR::SpecSupport(record: :new_episodes, cassette_name: 'doi-integration') do
         expect {
           Hydra::RemoteIdentifier.mint(:doi, target)
         }.to change(target, :set_identifier).from(nil).to(expected_doi)

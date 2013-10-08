@@ -3,11 +3,8 @@ $:.unshift File.join(GEM_ROOT, "lib")
 
 require 'vcr'
 
-module VCR::SpecSupport
-  module_function
-  def merge(options = {})
-    {vcr: {record: :new_episodes}.merge(options)}
-  end
+def VCR::SpecSupport(options={})
+  {vcr: {record: :new_episodes}.merge(options)}
 end
 
 VCR.configure do |config|

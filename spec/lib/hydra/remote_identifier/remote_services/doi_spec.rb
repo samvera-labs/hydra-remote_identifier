@@ -29,7 +29,7 @@ module Hydra::RemoteIdentifier
       subject { RemoteServices::Doi.new(configuration) }
 
       context '.call' do
-        it 'should post to remote service', VCR::SpecSupport.merge(cassette_name: 'doi-create') do
+        it 'should post to remote service', VCR::SpecSupport(cassette_name: 'doi-create') do
           expect(subject.call(payload)).to eq(expected_doi)
         end
       end
