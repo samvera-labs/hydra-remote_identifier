@@ -53,9 +53,16 @@ module Hydra::RemoteIdentifier
         }.to yield_with_args(RemoteServices::Doi)
       end
 
-      it 'should not yield the service if non is registered' do
+      it 'should not yield the service is not registered' do
         expect {|block|
           Hydra::RemoteIdentifier.with_registered_remote_service(:alternate, target, &block)
+        }.to_not yield_control
+      end
+
+      it 'should not yield the service if the target is not registered' do
+        target = double
+        expect {|block|
+          Hydra::RemoteIdentifier.with_registered_remote_service(:doi, target, &block)
         }.to_not yield_control
       end
 
@@ -67,6 +74,10 @@ module Hydra::RemoteIdentifier
         expect {
           Hydra::RemoteIdentifier.mint(:doi, target)
         }.to change(target, :set_identifier).from(nil).to(expected_doi)
+      end
+
+      it 'returns false if the target is not configured for identifiers' do
+        expect(Hydra::RemoteIdentifier.mint(:doi, double)).to eq(false)
       end
 
     end
@@ -82,6 +93,13 @@ module Hydra::RemoteIdentifier
 
       it 'should not yield when the remote identifier was not requested' do
         target.mint_doi = '0'
+        expect { |block|
+          Hydra::RemoteIdentifier.requested_remote_identifiers_for(target, &block)
+        }.to_not yield_control
+      end
+
+      it 'should not yield when the remote identifier if target is not configured' do
+        target = double
         expect { |block|
           Hydra::RemoteIdentifier.requested_remote_identifiers_for(target, &block)
         }.to_not yield_control
