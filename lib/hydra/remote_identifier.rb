@@ -26,11 +26,17 @@ module Hydra::RemoteIdentifier
     #     end
     #
     # @yieldparam config [Configuration]
-    attr_accessor :configuration
-    def configure
-      self.configuration ||= Configuration.new
-      yield(configuration)
+    def configure(&block)
+      @configuration_block = block
+      configure! unless defined?(Rails)
     end
+    attr_accessor :configuration
+
+    def configure!
+      self.configuration ||= Configuration.new
+      @configuration_block.call(configuration)
+    end
+    private :configure!
 
     # Yields the specified RemoteService if it _could_ be requested for the
     # Target.
