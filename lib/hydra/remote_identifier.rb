@@ -2,6 +2,7 @@ require "hydra/remote_identifier/version"
 require 'hydra/remote_identifier/configuration'
 require 'hydra/remote_identifier/registration'
 require 'hydra/remote_identifier/remote_service'
+require 'hydra/remote_identifier/railtie' if defined?(Rails)
 
 module Hydra::RemoteIdentifier
 
