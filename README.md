@@ -28,7 +28,7 @@ Configure your remote identifiers with credentials and what have you:
       config.remote_service(:doi, doi_credentials) do |doi|
         doi.register(Book, Page) do |map|
           map.target :url
-          map.creator :creator
+          map.creator {|obj| obj.person_name }
           map.title :title
           map.publisher :publisher
           map.publicationyear :publicationyear
@@ -36,6 +36,9 @@ Configure your remote identifiers with credentials and what have you:
         end
       end
     end
+
+If you are using Rails, you can run `rails generate hydra:remote_identifier:install` to
+create a Rails initializer with the above stub file.
 
 In your views allow users to request that a remote identifier be assigned:
 
@@ -55,3 +58,25 @@ Where your asynchronouse worker does its work request the minting:
 
     # Instantiate target from input
     Hydra::RemoteIdentifier.mint(remote_service_name, target)
+
+## Extending Hydra::RemoteIdentifier with alternate remote identifiers
+
+If you are interested in creating a new Hydra::RemoteIdentifier::RemoteService,
+this can be done by creating a class in the Hydra::RemoteIdentifier::RemoteServices
+namespace. See below:
+
+    module Hydra::RemoteIdentifier::RemoteServices
+      class MyRemoteService < Hydra::RemoteIdentifier::RemoteService
+        # your code here
+      end
+    end
+
+Then configure your RemoteService for your persisted targets. See below:
+
+    Hydra::RemoteIdentifier.configure do |config|
+      config.remote_service(:my_remote_service, credentials) do |mine|
+        mine.register(Book, Page) do |map|
+          # map fields of Book, Page to the required payload for MyRemoteService
+        end
+      end
+    end
