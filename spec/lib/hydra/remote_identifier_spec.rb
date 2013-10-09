@@ -93,6 +93,10 @@ module Hydra::RemoteIdentifier
         }.to change(target, :set_identifier).from(nil).to(expected_doi)
       end
 
+      it 'returns the newly minted identifier', VCR::SpecSupport(record: :new_episodes, cassette_name: 'doi-integration') do
+        expect(Hydra::RemoteIdentifier.mint(:doi, target)).to eq(expected_doi)
+      end
+
       it 'returns false if the target is not configured for identifiers' do
         expect(Hydra::RemoteIdentifier.mint(:doi, double)).to eq(false)
       end

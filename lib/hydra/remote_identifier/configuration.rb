@@ -17,7 +17,7 @@ module Hydra::RemoteIdentifier
     attr_reader :remote_services
 
     def find_remote_service(service_name)
-      remote_services.fetch(service_name)
+      remote_services.fetch(service_name.to_sym)
     end
 
     # @param service_name [#to_s]
@@ -25,14 +25,17 @@ module Hydra::RemoteIdentifier
     #
     # @yieldparam [Registration]
     def remote_service(service_name, *args)
-      remote_service = remote_service_class_lookup(service_name).new(*args)
-      remote_services[service_name] = remote_service
+      remote_service = find_or_store_remote_service(service_name, *args)
       registration = registration_builder.new(remote_service)
       yield(registration)
       remote_service
     end
 
     private
+    def find_or_store_remote_service(service_name, *args)
+      remote_services[service_name.to_sym] ||= remote_service_class_lookup(service_name).new(*args)
+      remote_services.fetch(service_name.to_sym)
+    end
 
     def remote_service_class_lookup(string)
       remote_service_class_name = string.to_s.gsub(/(?:^|_)([a-z])/) { $1.upcase }

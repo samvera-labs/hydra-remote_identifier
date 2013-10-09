@@ -108,12 +108,11 @@ module Hydra::RemoteIdentifier
     # @param target [#registered_remote_identifier_minters]
     def mint(remote_service_name, target)
       return false unless target.respond_to?(:registered_remote_identifier_minters)
-
-      # @TODO - there is a better way to do this but this is "complete/correct"
       remote_service = configuration.find_remote_service(remote_service_name)
-      target.registered_remote_identifier_minters.each do |coordinator|
-        coordinator.call(target) if coordinator.remote_service == remote_service
+      coordinator = target.registered_remote_identifier_minters.detect do |c|
+        c.remote_service.name == remote_service.name
       end
+      coordinator.call(target) if coordinator
     end
 
   end

@@ -27,6 +27,7 @@ module Hydra::RemoteIdentifier
 
     def update_target(identifier)
       target.set_identifier(identifier)
+      identifier
     end
 
   end

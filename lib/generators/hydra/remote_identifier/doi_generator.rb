@@ -14,6 +14,7 @@ class Hydra::RemoteIdentifier::DoiGenerator < Rails::Generators::Base
   argument :targets, :type => :array, :default => [], :banner => "class_name class_name"
 
   def insert_doi
+
     inject_into_file(
       "config/initializers/hydra-remote_identifier_config.rb",
       after: /Hydra::RemoteIdentifier.*/

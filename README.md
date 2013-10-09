@@ -3,7 +3,6 @@
 [![Gem Version](https://badge.fury.io/rb/hydra-remote_identifier.png)](http://badge.fury.io/rb/hydra-remote_identifier)
 [![Build Status](https://travis-ci.org/jeremyf/hydra-remote_identifier.png)](https://travis-ci.org/jeremyf/hydra-remote_identifier)
 
-
 Coordinate the registration and minting of remote identifiers for persisted
 objects.
 
@@ -42,9 +41,10 @@ end
 ```
 
 If you are using Rails, you can run `rails generate hydra:remote_identifier:install` to
-create a Rails initializer with the above stub file.
+create a Rails initializer with a configuration stub file. Also available is
+`rails generate hydra:remote_identifier:doi`.
 
-In your views allow users to request that a remote identifier be assigned:
+In your views allow users to request that a remote identifier be created/assigned:
 
 ```ruby
 <%= form_for book do |f| %>
