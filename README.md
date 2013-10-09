@@ -56,10 +56,15 @@ Where you enqueue an asynchronous worker iterate over the requested identifiers:
       MintRemoteIdentifierWorker.enqueue(book.to_param, remote_service.name)
     end
 
-Where your asynchronouse worker does its work request the minting:
+Where your asynchronous worker does its work request the minting:
 
     # Instantiate target from input
     Hydra::RemoteIdentifier.mint(remote_service_name, target)
+
+In your show views you can provide a link to the remote identifier via
+Hydra::RemoteIdentifier.remote_uri_for:
+
+    <%= link_to(object.doi, Hydra::RemoteIdentifier.remote_uri_for(:doi, object.doi)) %>
 
 ## Extending Hydra::RemoteIdentifier with alternate remote identifiers
 

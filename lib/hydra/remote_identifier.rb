@@ -26,8 +26,13 @@ module Hydra::RemoteIdentifier
     #     end
     #
     # @yieldparam config [Configuration]
+    # @see Hydra::RemoteIdentifier::Railtie
     def configure(&block)
       @configuration_block = block
+
+      # The Rails load sequence means that some of the configured Targets may
+      # not be loaded; As such I am not calling configure! instead relying on
+      # Hydra::RemoteIdentifier::Railtie to handle the configure! call
       configure! unless defined?(Rails)
     end
     attr_accessor :configuration
@@ -61,6 +66,17 @@ module Hydra::RemoteIdentifier
       }
     end
 
+    # @example
+    #    <%= link_to(object.doi, Hydra::RemoteIdentifier.remote_uri_for(:doi, object.doi)) %>
+    #
+    # @param remote_service_name [#to_s]
+    # @param identifier[#to_s] - An identifier that was created by the
+    #   RemoteService derived from the given remote_service_name
+    # @returns [URI] - The URI for that identifier
+    def remote_uri_for(remote_service_name, identifier)
+      remote_service = configuration.find_remote_service(remote_service_name)
+      remote_service.remote_uri_for(identifier)
+    end
 
     # Yields each RemoteService#name that _is_ requested for the Target.
     #
