@@ -18,11 +18,15 @@ module Hydra::RemoteIdentifier
       }.to change{ target_class.respond_to?(:registered_remote_identifier_minters) }.from(false).to(true)
     end
 
-    it 'adds a #mint_remote_service attribute' do
-      subject.register(target_class, &map)
-      target = target_class.new
-      expect(target).to respond_to(:mint_my_remote_service)
-      expect(target).to respond_to(:mint_my_remote_service=)
+    context 'adds a #mint_remote_service attribute' do
+      before(:each) do
+        subject.register(target_class, &map)
+      end
+      let(:target) { target_class.new }
+
+      it { expect(target).to respond_to(:mint_my_remote_service) }
+      it { expect(target).to respond_to(:mint_my_remote_service=) }
+      it { expect(target.mint_my_remote_service?).to eq(false) }
     end
 
     it 'registers the minting coordinator on the target class' do

@@ -31,6 +31,9 @@ module Hydra::RemoteIdentifier
           class_attribute :registered_remote_identifier_minters
         end
         attr_accessor service.accessor_name
+        define_method("#{service.accessor_name}?") do
+          instance_variable_get("@#{service.accessor_name}").to_i != 0
+        end
       end
       target_class.registered_remote_identifier_minters ||= []
       target_class.registered_remote_identifier_minters += [minting_coordinator.new(remote_service, &map)]
