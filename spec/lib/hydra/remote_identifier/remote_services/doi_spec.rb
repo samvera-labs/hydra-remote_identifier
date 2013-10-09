@@ -26,6 +26,12 @@ module Hydra::RemoteIdentifier
           expect(subject.call(payload)).to eq(expected_doi)
         end
       end
+
+      context '.remote_uri_for' do
+        it 'should be based on configuration' do
+          expect(subject.remote_uri_for(expected_doi).to_s).to eq(File.join(subject.url, expected_doi))
+        end
+      end
     end
   end
 end

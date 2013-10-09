@@ -15,6 +15,10 @@ module Hydra::RemoteIdentifier
       it { expect { subject.call(payload) }.to raise_error NotImplementedError }
     end
 
+    context '#remote_uri_for' do
+      it { expect { subject.remote_uri_for(double) }.to raise_error NotImplementedError }
+    end
+
     context '#valid_attribute?' do
       it { expect { subject.valid_attribute?(:attribute_name) }.to raise_error NotImplementedError }
     end

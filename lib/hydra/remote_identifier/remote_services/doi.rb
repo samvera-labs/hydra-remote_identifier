@@ -14,17 +14,16 @@ module Hydra::RemoteIdentifier
         url: "https://n2t.net/ezid/"
       }
 
-      attr_reader :uri
+      attr_reader :username, :password, :shoulder, :url
       def initialize(configuration = {})
-        username = configuration.fetch(:username)
-        password = configuration.fetch(:password)
-        shoulder = configuration.fetch(:shoulder)
-        url = configuration.fetch(:url)
+        @username = configuration.fetch(:username)
+        @password = configuration.fetch(:password)
+        @shoulder = configuration.fetch(:shoulder)
+        @url = configuration.fetch(:url)
+      end
 
-        # This is specific for the creation of DOIs
-        @uri = URI.parse(File.join(url, 'shoulder', shoulder))
-        @uri.user = username
-        @uri.password = password
+      def remote_uri_for(identifier)
+        URI.parse(File.join(url, identifier))
       end
 
       REQUIRED_ATTRIBUTES = ['target', 'creator', 'title', 'publisher', 'publicationyear' ].freeze
@@ -38,8 +37,15 @@ module Hydra::RemoteIdentifier
 
       private
 
+      def uri_for_create
+        uri_for_create = URI.parse(File.join(url, 'shoulder', shoulder))
+        uri_for_create.user = username
+        uri_for_create.password = password
+        uri_for_create
+      end
+
       def request(data)
-        response = RestClient.post(uri.to_s, data, content_type: 'text/plain')
+        response = RestClient.post(uri_for_create.to_s, data, content_type: 'text/plain')
         matched_data = /\Asuccess:(.*)(?<doi>doi:[^\|]*)(.*)\Z/.match(response.body)
         matched_data[:doi].strip
       end
