@@ -10,7 +10,7 @@ class Hydra::RemoteIdentifier::DoiGenerator < Rails::Generators::Base
   class_option :title, type: :string, default: ":title", desc: "Title of the created object"
   class_option :publisher, type: :string, default: ":publisher", desc: "Publisher of the created object"
   class_option :publication_year, type: :string, default: ":publication_year", desc: "Year the created object was published"
-  class_option :set_identifier, type: :string, default: ":set_doi_identifier", desc: "Method on object to call when DOI is set"
+  class_option :set_identifier, type: :string, default: ":set_doi_identifier", desc: "Method on object that will be called to both set and persist the newly minted DOI"
   argument :targets, :type => :array, :default => [], :banner => "class_name class_name"
 
   def insert_doi
@@ -30,6 +30,7 @@ class Hydra::RemoteIdentifier::DoiGenerator < Rails::Generators::Base
       data << %(      map.title #{options.fetch('title')})
       data << %(      map.publisher #{options.fetch('publisher')})
       data << %(      map.publicationyear #{options.fetch('publication_year')})
+      data << %(      # Make sure that this method both sets the identifier and persists the change!)
       data << %(      map.set_identifier #{options.fetch('set_identifier')})
       data << %(    end)
       data << %(  end)

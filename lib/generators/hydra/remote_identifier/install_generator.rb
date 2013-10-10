@@ -7,7 +7,7 @@ class Hydra::RemoteIdentifier::InstallGenerator < Rails::Generators::Base
 
       data << '# Register and configure remote identifiers for persisted objects'
       data << 'Hydra::RemoteIdentifier.configure do |config|'
-      data << '  # doi_credentials = Psych.load("/path/to/doi_credentials.yml")'
+      data << '  # doi_credentials = Psych.load_file("/path/to/doi_credentials.yml")'
       data << '  # config.remote_service(:doi, doi_credentials) do |doi|'
       data << '  #   doi.register(PersistedObject) do |map|'
       data << '  #     map.target :url'
@@ -15,6 +15,8 @@ class Hydra::RemoteIdentifier::InstallGenerator < Rails::Generators::Base
       data << '  #     map.title :title'
       data << '  #     map.publisher :publisher'
       data << '  #     map.publicationyear :publicationyear'
+      data << '  #'
+      data << '  #     # Make sure that this method persists the value'
       data << '  #     map.set_identifier :set_doi_identifier='
       data << '  #   end'
       data << '  # end'

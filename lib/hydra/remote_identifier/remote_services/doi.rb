@@ -15,7 +15,8 @@ module Hydra::RemoteIdentifier
       }
 
       attr_reader :username, :password, :shoulder, :url
-      def initialize(configuration = {})
+      def initialize(options = {})
+        configuration = options.with_indifferent_access
         @username = configuration.fetch(:username)
         @password = configuration.fetch(:password)
         @shoulder = configuration.fetch(:shoulder)
