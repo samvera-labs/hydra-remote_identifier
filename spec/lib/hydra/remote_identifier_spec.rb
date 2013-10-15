@@ -35,6 +35,20 @@ module Hydra::RemoteIdentifier
       end
     end
 
+    context '.remote_service' do
+      it 'should return an instance of the request service' do
+        expect(Hydra::RemoteIdentifier.remote_service(:doi)).
+        to be_kind_of(RemoteServices::Doi)
+      end
+
+      it 'should raise exception if it is not a valid remote service' do
+        expect{
+          Hydra::RemoteIdentifier.remote_service(:alternate)
+        }.to raise_error(KeyError)
+      end
+    end
+
+
     context '.with_registered_remote_service' do
       it 'should yield the service if one is registered' do
         expect {|block|

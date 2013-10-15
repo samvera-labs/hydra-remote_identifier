@@ -45,6 +45,16 @@ module Hydra::RemoteIdentifier
     end
     private :configure!
 
+    # Retrieve a valid RemoteService by name
+    # @example
+    #     doi_remote_service = Hydra::RemoteIdentifier.remote_service(:doi)
+    #
+    # @param remote_service_name [#to_s]
+    # @returns [RemoteService]
+    def remote_service(remote_service_name)
+      configuration.find_remote_service(remote_service_name)
+    end
+
     # Yields the specified RemoteService if it _could_ be requested for the
     # Target.
     #
