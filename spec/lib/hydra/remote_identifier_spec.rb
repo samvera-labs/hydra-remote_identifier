@@ -38,7 +38,7 @@ module Hydra::RemoteIdentifier
     context '.remote_service' do
       it 'should return an instance of the request service' do
         expect(Hydra::RemoteIdentifier.remote_service(:doi)).
-        to be_kind_of(RemoteServices::Doi)
+          to be_kind_of(RemoteServices::Doi)
       end
 
       it 'should raise exception if it is not a valid remote service' do
@@ -51,9 +51,10 @@ module Hydra::RemoteIdentifier
 
     context '.with_registered_remote_service' do
       it 'should yield the service if one is registered' do
-        expect {|block|
-          Hydra::RemoteIdentifier.with_registered_remote_service(:doi, target, &block)
-        }.to yield_with_args(RemoteServices::Doi)
+        Hydra::RemoteIdentifier.with_registered_remote_service(:doi, target) do |arg1|
+          @arg1 = arg1
+        end
+        expect(@arg1).to be_instance_of(RemoteServices::Doi)
       end
 
       it 'should not yield the service is not registered' do
@@ -68,6 +69,41 @@ module Hydra::RemoteIdentifier
           Hydra::RemoteIdentifier.with_registered_remote_service(:doi, target, &block)
         }.to_not yield_control
       end
+    end
+
+    context '.registered?' do
+      it 'should return true when registered' do
+        expect(Hydra::RemoteIdentifier.registered?(:doi, target)).to eq(true)
+      end
+
+      it 'should yield true when registered' do
+        expect { |b| Hydra::RemoteIdentifier.registered?(:doi, target, &b) }.to yield_control
+      end
+
+      it 'should yield a remote_service with one arg on the block' do
+        Hydra::RemoteIdentifier.registered?(:doi, target) do |arg1|
+          @arg1 = arg1
+        end
+        expect(@arg1).to be_instance_of(RemoteServices::Doi)
+      end
+
+      it 'should yield a remote_service and minting coordinator with two args' do
+        Hydra::RemoteIdentifier.registered?(:doi, target) do |arg1, arg2|
+          @arg1 = arg1
+          @arg2 = arg2
+        end
+        expect(@arg1).to be_instance_of(RemoteServices::Doi)
+        expect(@arg2).to be_instance_of(MintingCoordinator)
+      end
+
+      it 'should return false when not registered' do
+        expect(Hydra::RemoteIdentifier.registered?(:doi, double)).to eq(false)
+      end
+
+      it 'should return false when service does not exist' do
+        expect(Hydra::RemoteIdentifier.registered?(:alternate, double)).to eq(false)
+      end
+
     end
 
     context '.remote_uri_for' do
@@ -107,8 +143,8 @@ module Hydra::RemoteIdentifier
         }.to change(target, :set_identifier).from(nil).to(expected_doi)
       end
 
-      it 'returns the newly minted identifier', VCR::SpecSupport(record: :new_episodes, cassette_name: 'doi-integration') do
-        expect(Hydra::RemoteIdentifier.mint(:doi, target)).to eq(expected_doi)
+      it 'returns true minting occurred', VCR::SpecSupport(record: :new_episodes, cassette_name: 'doi-integration') do
+        expect(Hydra::RemoteIdentifier.mint(:doi, target)).to eq(true)
       end
 
       it 'returns false if the target is not configured for identifiers' do

@@ -48,7 +48,7 @@ In your views allow users to request that a remote identifier be created/assigne
 
 ```ruby
 <%= form_for book do |f| %>
-  <% Hydra::RemoteIdentifier.with_registered_remote_service(:doi, f.object) do |remote_service| %>
+  <% Hydra::RemoteIdentifier.registered?(:doi, f.object) do |remote_service| %>
     <%= f.input remote_service.accessor_name %>
   <% end %>
 <% end %>

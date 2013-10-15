@@ -59,22 +59,35 @@ module Hydra::RemoteIdentifier
     # Target.
     #
     # @example
-    #     <% Hydra::RemoteIdentifier.with_registered_remote_service(:doi, book) do |remote_service| %>
+    #     <% Hydra::RemoteIdentifier.registered?(:doi, book) do |remote_service| %>
     #       <%= f.input remote_service.accessor_name %>
     #     <% end %>
     #
     # @param remote_service_name [#to_s]
     # @param target [#registered_remote_identifier_minters]
-    def with_registered_remote_service(remote_service_name, target)
+    #
+    # @yieldparam @required first [RemoteService]
+    # @yieldparam @optional second [MintingCoordinator]
+    #
+    # @returns [Boolean]
+    def registered?(remote_service_name, target, &block)
       return false unless target.respond_to?(:registered_remote_identifier_minters)
-      # @TODO - the registered remote identifier is more than a bit off;
-      # but it continues to work
-      target.registered_remote_identifier_minters.each {|coordinator|
-        if coordinator.remote_service.name.to_s == remote_service_name.to_s
-          yield(coordinator.remote_service)
+      !!target.registered_remote_identifier_minters.detect do |coordinator|
+        # require 'debugger'; debugger; true;
+        if coordinator.remote_service.to_s == remote_service_name.to_s
+          if block_given?
+            if block.arity == 2
+              block.call(coordinator.remote_service, coordinator)
+            else
+              block.call(coordinator.remote_service)
+            end
+          end
+          true
         end
-      }
+      end
     end
+
+    alias_method :with_registered_remote_service, :registered?
 
     # @example
     #    <%= link_to(object.doi, Hydra::RemoteIdentifier.remote_uri_for(:doi, object.doi)) %>
@@ -117,12 +130,9 @@ module Hydra::RemoteIdentifier
     # @param remote_service_name [#to_s]
     # @param target [#registered_remote_identifier_minters]
     def mint(remote_service_name, target)
-      return false unless target.respond_to?(:registered_remote_identifier_minters)
-      remote_service = configuration.find_remote_service(remote_service_name)
-      coordinator = target.registered_remote_identifier_minters.detect do |c|
-        c.remote_service.name == remote_service.name
+      registered?(remote_service_name, target) do |remote_service, coordinator|
+        coordinator.call(target)
       end
-      coordinator.call(target) if coordinator
     end
 
   end

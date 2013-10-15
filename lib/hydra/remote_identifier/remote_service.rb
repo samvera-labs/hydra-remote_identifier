@@ -16,6 +16,14 @@ module Hydra::RemoteIdentifier
       name.to_s
     end
 
+    def registered?(target)
+      Hydra::RemoteIdentifier.registered?(self, target)
+    end
+
+    def mint(target)
+      Hydra::RemoteIdentifier.mint(self, target)
+    end
+
     # @param identifier[#to_s] - An identifier that was created by this remote
     #   service
     # @returns [URI] - The URI for that identifier
