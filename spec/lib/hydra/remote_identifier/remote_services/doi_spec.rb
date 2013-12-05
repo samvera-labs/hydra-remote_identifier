@@ -25,6 +25,13 @@ module Hydra::RemoteIdentifier
         it 'should post to remote service', VCR::SpecSupport(cassette_name: 'doi-create') do
           expect(subject.call(payload)).to eq(expected_doi)
         end
+
+        it 'should raise RemoteServiceError when request was invalid' do
+          RestClient.should_receive(:post).and_raise(RestClient::Exception.new)
+          expect {
+            subject.call(payload)
+          }.to raise_error(RemoteServiceError)
+        end
       end
 
       context '.remote_uri_for' do

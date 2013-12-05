@@ -50,7 +50,7 @@ module Hydra::RemoteIdentifier
         matched_data = /\Asuccess:(.*)(?<doi>doi:[^\|]*)(.*)\Z/.match(response.body)
         matched_data[:doi].strip
       rescue RestClient::Exception => e
-        raise(RemoteServiceError.new(e, uri_for_create, payload))
+        raise(RemoteServiceError.new(e, uri_for_create, data))
       end
 
       def data_for_create(payload)
