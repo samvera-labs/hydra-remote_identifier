@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: https://apitest:apitest@n2t.net/ezid/shoulder/doi:10.5072/FK2
+    uri: https://apitest:apitest@ezid.lib.purdue.edu/ezid/shoulder/doi:10.5072/FK2
     body:
       encoding: UTF-8
       string: |-
@@ -44,4 +44,48 @@ http_interactions:
       string: 'success: doi:10.5072/FK23J3QV8 | ark:/b5072/fk23j3qv8'
     http_version: 
   recorded_at: Thu, 03 Oct 2013 17:50:54 GMT
+- request:
+    method: post
+    uri: https://apitest:apitest@ezid.lib.purdue.edu/ezid/shoulder/doi:10.5072/FK2
+    body:
+      encoding: UTF-8
+      string: |-
+        _target: http://google.com
+        datacite.creator: Jeremy Friesen
+        datacite.title: My Article
+        datacite.publisher: Me Myself and I
+        datacite.publicationyear: 2013
+    headers:
+      Accept:
+      - '*/*; q=0.5, application/xml'
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - text/plain
+      Content-Length:
+      - '153'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 201
+      message: CREATED
+    headers:
+      Date:
+      - Fri, 14 Mar 2014 14:23:29 GMT
+      Server:
+      - Apache/2.2.17 (Unix) mod_ssl/2.2.17 OpenSSL/1.0.1e mod_wsgi/3.3 Python/2.7.6
+      Vary:
+      - Cookie
+      Set-Cookie:
+      - sessionid=ud2imdwp67byzzexktsdmfnm2h99dktp; httponly; Path=/
+      Content-Length:
+      - '53'
+      Content-Type:
+      - text/plain; charset=UTF-8
+    body:
+      encoding: UTF-8
+      string: 'success: doi:10.5072/FK2S474W4 | ark:/b5072/fk2s474w4'
+    http_version: 
+  recorded_at: Fri, 14 Mar 2014 14:23:33 GMT
 recorded_with: VCR 2.6.0

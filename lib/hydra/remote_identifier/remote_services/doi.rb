@@ -11,7 +11,7 @@ module Hydra::RemoteIdentifier
         username: 'apitest',
         password: 'apitest',
         shoulder: 'doi:10.5072/FK2',
-        url: "https://n2t.net/ezid/"
+        url: "https://ezid.lib.purdue.edu/ezid/"
       }
 
       attr_reader :username, :password, :shoulder, :url
