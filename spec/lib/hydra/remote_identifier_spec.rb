@@ -150,8 +150,25 @@ module Hydra::RemoteIdentifier
       it 'returns false if the target is not configured for identifiers' do
         expect(Hydra::RemoteIdentifier.mint(:doi, double)).to eq(false)
       end
-    end
 
+    end
+    if ENV['DOI_API_USERNAME'] && ENV['DOI_API_PASSWORD']
+
+      let(:doi_options) {
+        {
+          username: ENV['DOI_API_USERNAME'],
+          password: ENV['DOI_API_PASSWORD'],
+          shoulder: 'doi:10.5072/FK2',
+          url: "https://ezid.lib.purdue.edu/ezid/"
+        }
+      }
+
+      context 'against live sandbox' do
+        it 'works!' do
+          Hydra::RemoteIdentifier.mint(:doi, target)
+        end
+      end
+    end
   end
 
 end
