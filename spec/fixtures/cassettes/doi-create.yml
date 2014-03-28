@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: https://apitest:apitest@ezid.lib.purdue.edu/ezid/shoulder/doi:10.5072/FK2
+    uri: https://apitest:apitest@ezid.lib.purdue.edu/shoulder/doi:10.5072/FK2
     body:
       encoding: UTF-8
       string: |-
@@ -34,7 +34,7 @@ http_interactions:
       Vary:
       - Cookie
       Set-Cookie:
-      - sessionid=649cfcff023c40d4c8f1420673837ae6; Path=/ezid/
+      - sessionid=649cfcff023c40d4c8f1420673837ae6; Path=/
       Content-Length:
       - '53'
       Content-Type:
@@ -46,7 +46,7 @@ http_interactions:
   recorded_at: Thu, 03 Oct 2013 17:50:54 GMT
 - request:
     method: post
-    uri: https://apitest:apitest@ezid.lib.purdue.edu/ezid/shoulder/doi:10.5072/FK2
+    uri: https://apitest:apitest@ezid.lib.purdue.edu/shoulder/doi:10.5072/FK2
     body:
       encoding: UTF-8
       string: |-
