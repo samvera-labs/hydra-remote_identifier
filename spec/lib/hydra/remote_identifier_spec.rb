@@ -159,7 +159,7 @@ module Hydra::RemoteIdentifier
           username: ENV['DOI_API_USERNAME'],
           password: ENV['DOI_API_PASSWORD'],
           shoulder: 'doi:10.5072/FK2',
-          url: "https://ezid.lib.purdue.edu/ezid/"
+          url: "https://ezid.lib.purdue.edu/"
         }
       }
 
