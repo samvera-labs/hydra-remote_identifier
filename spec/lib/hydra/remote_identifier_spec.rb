@@ -109,7 +109,7 @@ module Hydra::RemoteIdentifier
     context '.remote_uri_for' do
       it {
         expect(Hydra::RemoteIdentifier.remote_uri_for(:doi, expected_doi)).
-        to eq(URI.parse(File.join(doi_options.fetch(:url), expected_doi)))
+        to eq(URI.parse(File.join(doi_options.fetch(:resolver_url), expected_doi)))
       }
     end
 

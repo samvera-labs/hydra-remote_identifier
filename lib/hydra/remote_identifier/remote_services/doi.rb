@@ -11,20 +11,22 @@ module Hydra::RemoteIdentifier
         username: 'apitest',
         password: 'apitest',
         shoulder: 'doi:10.5072/FK2',
-        url: "https://ezid.lib.purdue.edu/"
+        url: "https://ezid.lib.purdue.edu/",
+        resolver_url: 'http://dx.doi.org/'
       }
 
-      attr_reader :username, :password, :shoulder, :url
+      attr_reader :username, :password, :shoulder, :url, :resolver_url
       def initialize(options = {})
         configuration = options.with_indifferent_access
         @username = configuration.fetch(:username)
         @password = configuration.fetch(:password)
         @shoulder = configuration.fetch(:shoulder)
         @url = configuration.fetch(:url)
+        @resolver_url = configuration.fetch(:resolver_url) { default_resolver_url }
       end
 
       def remote_uri_for(identifier)
-        URI.parse(File.join(url, identifier))
+        URI.parse(File.join(resolver_url, identifier))
       end
 
       REQUIRED_ATTRIBUTES = ['target', 'creator', 'title', 'publisher', 'publicationyear' ].freeze
@@ -61,6 +63,10 @@ module Hydra::RemoteIdentifier
         data << "datacite.publisher: #{payload.fetch(:publisher)}"
         data << "datacite.publicationyear: #{payload.fetch(:publicationyear)}"
         data.join("\n")
+      end
+
+      def default_resolver_url
+        'http://dx.doi.org/'
       end
     end
   end
