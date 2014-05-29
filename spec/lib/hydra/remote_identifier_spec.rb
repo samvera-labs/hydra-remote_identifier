@@ -155,12 +155,12 @@ module Hydra::RemoteIdentifier
     if ENV['DOI_API_USERNAME'] && ENV['DOI_API_PASSWORD']
 
       let(:doi_options) {
-        {
+        RemoteServices::Doi::TEST_CONFIGURATION.merge(
           username: ENV['DOI_API_USERNAME'],
           password: ENV['DOI_API_PASSWORD'],
           shoulder: 'doi:10.5072/FK2',
           url: "https://ezid.lib.purdue.edu/"
-        }
+        )
       }
 
       context 'against live sandbox' do
