@@ -1,7 +1,7 @@
 # Hydra::RemoteIdentifier
 
 [![Gem Version](https://badge.fury.io/rb/hydra-remote_identifier.png)](http://badge.fury.io/rb/hydra-remote_identifier)
-[![Build Status](https://travis-ci.org/jeremyf/hydra-remote_identifier.png)](https://travis-ci.org/jeremyf/hydra-remote_identifier)
+[![Build Status](https://travis-ci.org/projecthydra-labs/hydra-remote_identifier.png)](https://travis-ci.org/project-hydra-labs/hydra-remote_identifier)
 
 Coordinate the registration and minting of remote identifiers for persisted
 objects.
