@@ -9,7 +9,7 @@ module Hydra::RemoteIdentifier
       let(:payload) {
         {
           target: 'http://google.com',
-          creator: 'Jeremy Friesen',
+          creator: ['Jeremy Friesen', 'Rajesh Balekai'],
           title: 'My Article',
           publisher: 'Me Myself and I',
           publicationyear: "2013"

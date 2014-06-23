@@ -58,9 +58,9 @@ module Hydra::RemoteIdentifier
       def data_for_create(payload)
         data = []
         data << "_target: #{payload.fetch(:target)}"
-        data << "datacite.creator: #{payload.fetch(:creator)}"
-        data << "datacite.title: #{payload.fetch(:title)}"
-        data << "datacite.publisher: #{payload.fetch(:publisher)}"
+        data << "datacite.creator: #{Array(payload.fetch(:creator)).join(', ')}"
+        data << "datacite.title: #{Array(payload.fetch(:title)).join('; ')}"
+        data << "datacite.publisher: #{Array(payload.fetch(:publisher)).join(', ')}"
         data << "datacite.publicationyear: #{payload.fetch(:publicationyear)}"
         data.join("\n")
       end

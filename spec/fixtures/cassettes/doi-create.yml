@@ -7,7 +7,7 @@ http_interactions:
       encoding: UTF-8
       string: |-
         _target: http://google.com
-        datacite.creator: Jeremy Friesen
+        datacite.creator: Jeremy Friesen, Rajesh Balekai
         datacite.title: My Article
         datacite.publisher: Me Myself and I
         datacite.publicationyear: 2013
