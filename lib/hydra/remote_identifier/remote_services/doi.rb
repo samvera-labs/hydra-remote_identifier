@@ -1,6 +1,7 @@
 require 'uri'
 require 'rest_client'
 require 'hydra/remote_identifier/remote_service'
+require 'hydra/remote_identifier/exceptions'
 require 'active_support/core_ext/hash/indifferent_access'
 
 module Hydra::RemoteIdentifier
@@ -25,8 +26,15 @@ module Hydra::RemoteIdentifier
         @resolver_url = configuration.fetch(:resolver_url) { default_resolver_url }
       end
 
+      def normalize_identifier(value)
+        value.to_s.strip.
+          sub(/\A#{resolver_url}/, '').
+          sub(/\A\s*doi:\s+/, 'doi:').
+          sub(/\A(\d)/, 'doi:\1')
+      end
+
       def remote_uri_for(identifier)
-        URI.parse(File.join(resolver_url, identifier))
+        URI.parse(File.join(resolver_url, normalize_identifier(identifier)))
       end
 
       REQUIRED_ATTRIBUTES = ['target', 'creator', 'title', 'publisher', 'publicationyear' ].freeze

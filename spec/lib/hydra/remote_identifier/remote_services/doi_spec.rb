@@ -21,6 +21,18 @@ module Hydra::RemoteIdentifier
       }
       subject { RemoteServices::Doi.new(configuration) }
 
+      context '#normalize_identifier' do
+        [
+          ['doi: 10.6017/ital.v28i2.3177', 'doi:10.6017/ital.v28i2.3177'],
+          ['10.6017/ital.v28i2.3177', 'doi:10.6017/ital.v28i2.3177'],
+          [ RemoteServices::Doi::TEST_CONFIGURATION.fetch(:resolver_url) + '10.6017/ital.v28i2.3177', 'doi:10.6017/ital.v28i2.3177']
+        ].each_with_index do |(input, expected), index|
+          it "scenario ##{index}" do
+            expect(subject.normalize_identifier(input)).to eq(expected)
+          end
+        end
+      end
+
       context '.call' do
         it 'should post to remote service', VCR::SpecSupport(cassette_name: 'doi-create') do
           expect(subject.call(payload)).to eq(expected_doi)
