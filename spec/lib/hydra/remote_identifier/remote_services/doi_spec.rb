@@ -24,8 +24,12 @@ module Hydra::RemoteIdentifier
       context '#normalize_identifier' do
         [
           ['doi: 10.6017/ital.v28i2.3177', 'doi:10.6017/ital.v28i2.3177'],
+          ['doi:  10.6017/ital.v28i2.3177', 'doi:10.6017/ital.v28i2.3177'],
+          ["doi:\t10.6017/ital.v28i2.3177", 'doi:10.6017/ital.v28i2.3177'],
           ['10.6017/ital.v28i2.3177', 'doi:10.6017/ital.v28i2.3177'],
-          [ RemoteServices::Doi::TEST_CONFIGURATION.fetch(:resolver_url) + '10.6017/ital.v28i2.3177', 'doi:10.6017/ital.v28i2.3177']
+          ['doi:10.6017/ital.v28i2.3177', 'doi:10.6017/ital.v28i2.3177'],
+          [ RemoteServices::Doi::TEST_CONFIGURATION.fetch(:resolver_url) + '10.6017/ital.v28i2.3177', 'doi:10.6017/ital.v28i2.3177'],
+          [ File.join(RemoteServices::Doi::TEST_CONFIGURATION.fetch(:resolver_url),'10.6017/ital.v28i2.3177'), 'doi:10.6017/ital.v28i2.3177']
         ].each_with_index do |(input, expected), index|
           it "scenario ##{index}" do
             expect(subject.normalize_identifier(input)).to eq(expected)
