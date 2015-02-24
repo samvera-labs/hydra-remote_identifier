@@ -26,13 +26,13 @@ module Hydra::RemoteIdentifier
 
     context '#mint' do
       it 'should forward delegate to Hydra::RemoteService' do
-        Hydra::RemoteIdentifier.should_receive(:mint).with(subject, target)
+        expect(Hydra::RemoteIdentifier).to receive(:mint).with(subject, target)
         subject.mint(target)
       end
     end
     context '#registered?' do
       it 'should forward delegate to Hydra::RemoteService' do
-        Hydra::RemoteIdentifier.should_receive(:registered?).with(subject, target).and_return(:returning_value)
+        expect(Hydra::RemoteIdentifier).to receive(:registered?).with(subject, target).and_return(:returning_value)
         expect(subject.registered?(target)).to eq(:returning_value)
       end
     end

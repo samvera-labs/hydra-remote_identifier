@@ -6,7 +6,7 @@ module Hydra::RemoteIdentifier
 
     describe 'with valid mapping block' do
       before(:each) do
-        service_class.should_receive(:valid_attribute?).with(:title).and_return(true)
+        expect(service_class).to receive(:valid_attribute?).with(:title).and_return(true)
       end
       subject {
         Mapper.new(service_class) { |map|
@@ -22,14 +22,14 @@ module Hydra::RemoteIdentifier
 
       it { expect(subject.call(target).extract_payload).to eq({ title: my_title }) }
       it {
-        target.should_receive(:foo=).with(identifier)
+        expect(target).to receive(:foo=).with(identifier)
         subject.call(target).set_identifier(identifier)
       }
     end
 
     describe 'with invalid mapping block' do
       it 'chokes on invalid attribute' do
-        service_class.should_receive(:valid_attribute?).with(:title).and_return(false)
+        expect(service_class).to receive(:valid_attribute?).with(:title).and_return(false)
         expect {
           Mapper.new(service_class) { |map|
             map.title :title
@@ -39,7 +39,7 @@ module Hydra::RemoteIdentifier
       end
 
       it 'chokes when set_identifier is not specified' do
-        service_class.should_receive(:valid_attribute?).with(:title).and_return(true)
+        expect(service_class).to receive(:valid_attribute?).with(:title).and_return(true)
         expect {
           Mapper.new(service_class) { |map|
             map.title :title
@@ -125,7 +125,7 @@ module Hydra::RemoteIdentifier
         describe 'with implicit setter' do
           let(:map) { double(_setter: :bar) }
           specify {
-            target.should_receive(:bar).with(:expected_identifier)
+            expect(target).to receive(:bar).with(:expected_identifier)
             subject.set_identifier(:expected_identifier)
           }
         end
@@ -133,7 +133,7 @@ module Hydra::RemoteIdentifier
         describe 'with lambda setter' do
           let(:map) { double(_setter: lambda {|o, v| o.foo = v  } ) }
           specify {
-            target.should_receive(:foo=).with(:expected_identifier)
+            expect(target).to receive(:foo=).with(:expected_identifier)
             subject.set_identifier(:expected_identifier)
           }
         end
@@ -145,7 +145,7 @@ module Hydra::RemoteIdentifier
             double(_setter: { at: 'properties', in: :identifier } )
           }
           specify {
-            datastreams['properties'].should_receive(:identifier=).with(:expected_identifier)
+            expect(datastreams['properties']).to receive(:identifier=).with(:expected_identifier)
             subject.set_identifier(:expected_identifier)
           }
         end

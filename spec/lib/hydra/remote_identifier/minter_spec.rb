@@ -15,8 +15,8 @@ module Hydra::RemoteIdentifier
     describe '#call' do
       subject { Minter.new(service, target) }
       it "extracts the target's payload to send to the remote service then updates the target's identifier" do
-        service.should_receive(:call).with(payload).and_return(identifier)
-        target.should_receive(:set_identifier).with(identifier)
+        expect(service).to receive(:call).with(payload).and_return(identifier)
+        expect(target).to receive(:set_identifier).with(identifier)
         expect(subject.call).to eq(identifier)
       end
     end
