@@ -39,7 +39,7 @@ module Hydra::RemoteIdentifier
         end
 
         it 'should raise RemoteServiceError when request was invalid' do
-          RestClient.should_receive(:post).and_raise(RestClient::Exception.new)
+          expect(RestClient).to receive(:post).and_raise(RestClient::Exception.new)
           expect {
             subject.call(payload)
           }.to raise_error(RemoteServiceError)

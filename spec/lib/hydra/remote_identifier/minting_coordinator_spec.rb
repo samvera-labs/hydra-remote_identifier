@@ -9,7 +9,7 @@ module Hydra::RemoteIdentifier
     subject { MintingCoordinator.new(remote_service, mapper_builder, &map) }
     it 'forward delegates call to the minter' do
       minter = double
-      minter.should_receive(:call).with(remote_service, :wrapped_target).and_return(:response)
+      expect(minter).to receive(:call).with(remote_service, :wrapped_target).and_return(:response)
       expect(subject.call(target, minter)).to eq(:response)
     end
   end
