@@ -17,7 +17,7 @@ module Hydra::RemoteIdentifier
       }
       let(:expected_doi) {
         # From the doi-create cassette
-        'doi:10.5072/FK23J3QV8'
+        'doi:10.5072/FK2R20ZT0X'
       }
       subject { RemoteServices::Doi.new(configuration) }
 
