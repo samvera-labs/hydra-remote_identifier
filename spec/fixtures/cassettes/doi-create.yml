@@ -13,7 +13,7 @@ http_interactions:
         datacite.publicationyear: 2013
     headers:
       Accept:
-      - '*/*; q=0.5, application/xml'
+      - "*/*; q=0.5, application/xml"
       Accept-Encoding:
       - gzip, deflate
       Content-Type:
@@ -57,7 +57,7 @@ http_interactions:
         datacite.publicationyear: 2013
     headers:
       Accept:
-      - '*/*; q=0.5, application/xml'
+      - "*/*; q=0.5, application/xml"
       Accept-Encoding:
       - gzip, deflate
       Content-Type:
@@ -88,4 +88,50 @@ http_interactions:
       string: 'success: doi:10.5072/FK2S474W4 | ark:/b5072/fk2s474w4'
     http_version: 
   recorded_at: Fri, 14 Mar 2014 14:23:33 GMT
-recorded_with: VCR 2.6.0
+- request:
+    method: post
+    uri: https://ezid.lib.purdue.edu/shoulder/doi:10.5072/FK2
+    body:
+      encoding: UTF-8
+      string: |-
+        _target: http://google.com
+        datacite.creator: Jeremy Friesen, Rajesh Balekai
+        datacite.title: My Article
+        datacite.publisher: Me Myself and I
+        datacite.publicationyear: 2013
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - text/plain
+      Content-Length:
+      - '169'
+      User-Agent:
+      - Ruby
+      Authorization:
+      - Basic YXBpdGVzdDphcGl0ZXN0
+  response:
+    status:
+      code: 201
+      message: CREATED
+    headers:
+      Date:
+      - Wed, 10 May 2017 19:24:24 GMT
+      Server:
+      - Apache/2.2.17 (Unix) mod_ssl/2.2.17 OpenSSL/1.0.1k-fips mod_wsgi/4.4.9 Python/2.7.12
+      Content-Length:
+      - '55'
+      Vary:
+      - Accept-Language,Cookie
+      Content-Language:
+      - en
+      Content-Type:
+      - text/plain; charset=UTF-8
+    body:
+      encoding: UTF-8
+      string: 'success: doi:10.5072/FK2R20ZT0X | ark:/b5072/fk2r20zt0x'
+    http_version: 
+  recorded_at: Wed, 10 May 2017 19:24:25 GMT
+recorded_with: VCR 3.0.3

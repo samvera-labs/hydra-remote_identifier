@@ -13,7 +13,7 @@ http_interactions:
         datacite.publicationyear: 2013
     headers:
       Accept:
-      - '*/*; q=0.5, application/xml'
+      - "*/*; q=0.5, application/xml"
       Accept-Encoding:
       - gzip, deflate
       Content-Type:
@@ -57,7 +57,7 @@ http_interactions:
         datacite.publicationyear: 2013
     headers:
       Accept:
-      - '*/*; q=0.5, application/xml'
+      - "*/*; q=0.5, application/xml"
       Accept-Encoding:
       - gzip, deflate
       Content-Type:
@@ -88,4 +88,50 @@ http_interactions:
       string: 'success: doi:10.5072/FK2NC6D3G | ark:/b5072/fk2nc6d3g'
     http_version: 
   recorded_at: Fri, 14 Mar 2014 14:23:38 GMT
-recorded_with: VCR 2.6.0
+- request:
+    method: post
+    uri: https://ezid.lib.purdue.edu/shoulder/doi:10.5072/FK2
+    body:
+      encoding: UTF-8
+      string: |-
+        _target: http://google.com
+        datacite.creator: my creator
+        datacite.title: my title
+        datacite.publisher: my publisher
+        datacite.publicationyear: 2013
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - text/plain
+      Content-Length:
+      - '144'
+      User-Agent:
+      - Ruby
+      Authorization:
+      - Basic YXBpdGVzdDphcGl0ZXN0
+  response:
+    status:
+      code: 201
+      message: CREATED
+    headers:
+      Date:
+      - Wed, 10 May 2017 19:24:25 GMT
+      Server:
+      - Apache/2.2.17 (Unix) mod_ssl/2.2.17 OpenSSL/1.0.1k-fips mod_wsgi/4.4.9 Python/2.7.12
+      Content-Length:
+      - '55'
+      Vary:
+      - Accept-Language,Cookie
+      Content-Language:
+      - en
+      Content-Type:
+      - text/plain; charset=UTF-8
+    body:
+      encoding: UTF-8
+      string: 'success: doi:10.5072/FK2M90806R | ark:/b5072/fk2m90806r'
+    http_version: 
+  recorded_at: Wed, 10 May 2017 19:24:26 GMT
+recorded_with: VCR 3.0.3
