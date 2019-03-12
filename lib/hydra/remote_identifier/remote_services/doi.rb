@@ -13,7 +13,7 @@ module Hydra::RemoteIdentifier
         password: 'apitest',
         shoulder: 'doi:10.5072/FK2',
         url: "https://ezid.lib.purdue.edu/",
-        resolver_url: 'http://dx.doi.org/'
+        resolver_url: 'https://doi.org/'
       }
 
       attr_reader :username, :password, :shoulder, :url, :resolver_url
@@ -74,7 +74,7 @@ module Hydra::RemoteIdentifier
       end
 
       def default_resolver_url
-        'http://dx.doi.org/'
+        'https://doi.org/'
       end
     end
   end
